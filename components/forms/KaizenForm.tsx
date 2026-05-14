@@ -48,6 +48,7 @@ export function KaizenForm() {
           employee_id: employeeId,
           category,
           description,
+          status: "Новая"
         },
       ]);
 

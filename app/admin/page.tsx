@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { RejectDialog } from "@/components/dialogs/RejectDialog";
 import { Header } from "@/components/layout/Header";
 import { supabase } from "@/lib/supabase";
+import { AdminStats } from "@/components/admin/AdminStats";
 
 type Improvement = {
   id: number;
@@ -272,6 +273,29 @@ export default function AdminPage() {
         <h1 className="text-3xl font-bold text-white">
           Администрирование
         </h1>
+        <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
+
+          <AdminStats
+             title="Новые"
+             value={newItems.length}
+          />
+
+          <AdminStats
+            title="В работе"
+             value={inProgressItems.length}
+          />
+
+           <AdminStats
+             title="Внедрено"
+             value={implementedItems.length}
+           />
+
+           <AdminStats
+             title="Отклонено"
+              value={rejectedItems.length}
+           />
+
+</div>
 
         <div className="space-y-3">
 
