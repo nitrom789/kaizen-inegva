@@ -59,7 +59,7 @@ export function AdminSidebar({
               onClick={() =>
                 setActiveSection(item.key)
               }
-              className={`group relative w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+              className={`group relative w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 ${
                 activeSection === item.key
                   ? "bg-blue-50 text-blue-600"
                   : "text-gray-700 hover:bg-gray-50"
@@ -81,7 +81,7 @@ export function AdminSidebar({
                 }`}
               />
 
-              <span className="font-medium text-[15px]">
+              <span className="font-medium text-sm">
                 {item.label}
               </span>
 
