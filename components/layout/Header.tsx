@@ -121,6 +121,8 @@ export function Header() {
 
           </div>
 
+          {!isAdminPage && (
+
           <div className="md:hidden">
 
             <button
@@ -132,7 +134,7 @@ export function Header() {
               Меню
             </button>
 
-          </div>
+          </div>)}
 
           {!userEmail ? (
 
