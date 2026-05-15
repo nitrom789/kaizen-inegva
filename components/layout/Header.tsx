@@ -1,43 +1,61 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+
+import {
+  useEffect,
+  useState,
+} from "react";
+
+import {
+  usePathname,
+} from "next/navigation";
 
 import { supabase } from "@/lib/supabase";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
 export function Header() {
 
   const pathname = usePathname();
 
-  const [userEmail, setUserEmail] = useState("");
-  const [mobileMenuOpen, setMobileMenuOpen] =
+  const [userEmail, setUserEmail] =
+    useState("");
+
+  const [mobileMenuOpen,
+    setMobileMenuOpen] =
     useState(false);
 
-  const navItems = [
-    {
-      label: "Главная",
-      href: "/",
-    },
-    {
-      label: "Новая",
-      href: "/new",
-    },
-    {
-      label: "В работе",
-      href: "/in-progress",
-    },
-    {
-      label: "Внедрено",
-      href: "/implemented",
-    },
-    {
-      label: "Отклонено",
-      href: "/rejected",
-    },
-  ];
+  const isAdminPage =
+    pathname.startsWith("/admin");
+
+  const navItems = isAdminPage
+    ? [
+        {
+          label: "Главная",
+          href: "/",
+        },
+      ]
+    : [
+        {
+          label: "Главная",
+          href: "/",
+        },
+        {
+          label: "Новая",
+          href: "/new",
+        },
+        {
+          label: "В работе",
+          href: "/in-progress",
+        },
+        {
+          label: "Внедрено",
+          href: "/implemented",
+        },
+        {
+          label: "Отклонено",
+          href: "/rejected",
+        },
+      ];
 
   useEffect(() => {
     checkUser();
@@ -55,27 +73,29 @@ export function Header() {
   };
 
   const handleLogout = async () => {
+
     await supabase.auth.signOut();
+
     window.location.href = "/";
   };
 
   return (
     <header className="w-full px-4 pt-4">
 
-      <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 space-y-4">
+      <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl px-6 py-4">
 
         <div className="flex items-center justify-between gap-4">
 
-          <div className="hidden md:flex gap-2">
+          <div className="hidden md:flex items-center gap-2">
 
             {navItems.map((item) => (
 
               <Link
                 key={item.href}
                 href={item.href}
-                className={`px-4 py-2 rounded-xl whitespace-nowrap text-sm font-medium transition ${
+                className={`px-5 py-3 rounded-2xl whitespace-nowrap text-sm font-medium transition-all duration-200 ${
                   pathname === item.href
-                    ? "bg-white text-blue-600"
+                    ? "bg-white text-blue-600 shadow-lg"
                     : "text-white hover:bg-white/10"
                 }`}
               >
@@ -84,13 +104,13 @@ export function Header() {
 
             ))}
 
-            {userEmail && (
+            {!isAdminPage && userEmail && (
 
               <Link
                 href="/admin"
-                className={`px-4 py-2 rounded-xl whitespace-nowrap text-sm font-medium transition ${
+                className={`px-5 py-3 rounded-2xl whitespace-nowrap text-sm font-medium transition-all duration-200 ${
                   pathname === "/admin"
-                    ? "bg-white text-blue-600"
+                    ? "bg-white text-blue-600 shadow-lg"
                     : "text-white hover:bg-white/10"
                 }`}
               >
@@ -118,18 +138,18 @@ export function Header() {
 
             <Link
               href="/login"
-              className="text-white border border-white/30 px-4 py-2 rounded-xl text-sm whitespace-nowrap hover:bg-white/10 transition"
+              className="text-white border border-white/30 px-5 py-3 rounded-2xl text-sm whitespace-nowrap hover:bg-white/10 transition"
             >
               Войти
             </Link>
 
           ) : (
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
 
               <div className="text-right hidden sm:block">
 
-                <p className="text-white text-sm font-medium">
+                <p className="text-white text-sm font-semibold">
                   {userEmail}
                 </p>
 
@@ -141,7 +161,7 @@ export function Header() {
 
               <button
                 onClick={handleLogout}
-                className="text-white border border-white/30 px-4 py-2 rounded-xl text-sm hover:bg-white/10 transition"
+                className="text-white border border-white/30 px-5 py-3 rounded-2xl text-sm hover:bg-white/10 transition"
               >
                 Выйти
               </button>
@@ -154,7 +174,7 @@ export function Header() {
 
         {mobileMenuOpen && (
 
-          <div className="md:hidden flex flex-col gap-2 pt-2">
+          <div className="md:hidden flex flex-col gap-2 pt-4">
 
             {navItems.map((item) => (
 
@@ -175,7 +195,7 @@ export function Header() {
 
             ))}
 
-            {userEmail && (
+            {!isAdminPage && userEmail && (
 
               <Link
                 href="/admin"
