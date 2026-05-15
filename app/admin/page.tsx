@@ -2,12 +2,17 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+
 import { RejectDialog } from "@/components/dialogs/RejectDialog";
-import { Header } from "@/components/layout/Header";
-import { supabase } from "@/lib/supabase";
-import { AdminStats } from "@/components/admin/AdminStats";
 import { DeleteDialog } from "@/components/dialogs/DeleteDialog";
+
+import { Header } from "@/components/layout/Header";
+
+import { supabase } from "@/lib/supabase";
+
+import { AdminStats } from "@/components/admin/AdminStats";
 import { EmployeeForm } from "@/components/admin/EmployeeForm";
+import { AdminSidebar } from "@/components/admin/AdminSidebar";
 
 type Improvement = {
   id: number;
@@ -22,19 +27,30 @@ type Improvement = {
   };
 };
 
-
 export default function AdminPage() {
 
-  const [improvements, setImprovements] = useState<Improvement[]>([]);
-  const [rejectOpen, setRejectOpen] = useState(false);
+  const [improvements, setImprovements] =
+    useState<Improvement[]>([]);
 
-  const [selectedImprovementId, setSelectedImprovementId] =
-  useState<number | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [rejectOpen, setRejectOpen] =
+    useState(false);
 
-  const [selectedDeleteId, setSelectedDeleteId] =
-  useState<number | null>(null);
+  const [selectedImprovementId,
+    setSelectedImprovementId] =
+    useState<number | null>(null);
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [deleteOpen, setDeleteOpen] =
+    useState(false);
+
+  const [selectedDeleteId,
+    setSelectedDeleteId] =
+    useState<number | null>(null);
+
+  const [activeSection, setActiveSection] =
+    useState("overview");
 
   useEffect(() => {
     checkAdmin();
@@ -53,11 +69,12 @@ export default function AdminPage() {
 
     const userEmail = session.user.email;
 
-    const { data: adminData, error } = await supabase
-      .from("admins")
-      .select("*")
-      .eq("email", userEmail)
-      .single();
+    const { data: adminData, error } =
+      await supabase
+        .from("admins")
+        .select("*")
+        .eq("email", userEmail)
+        .single();
 
     if (error || !adminData) {
       window.location.href = "/";
@@ -78,7 +95,9 @@ export default function AdminPage() {
           photo_url
         )
       `)
-      .order("created_at", { ascending: false });
+      .order("created_at", {
+        ascending: false,
+      });
 
     if (error) {
       console.error(error);
@@ -89,49 +108,48 @@ export default function AdminPage() {
     setLoading(false);
   };
 
-  
   const updateStatus = async (
-  id: number,
-  status: string,
-  rejectReason = ""
-) => {
+    id: number,
+    status: string,
+    rejectReason = ""
+  ) => {
 
-  const { error } = await supabase
-    .from("improvements")
-    .update({
-      status,
-      reject_reason: rejectReason,
-    })
-    .eq("id", id);
+    const { error } = await supabase
+      .from("improvements")
+      .update({
+        status,
+        reject_reason: rejectReason,
+      })
+      .eq("id", id);
 
-  if (error) {
-    console.error(error);
-    return;
-  }
+    if (error) {
+      console.error(error);
+      return;
+    }
 
-  fetchImprovements();
-};
+    fetchImprovements();
+  };
 
-const deleteImprovement = async (
-  id: number
-) => {
+  const deleteImprovement = async (
+    id: number
+  ) => {
 
-  const { error } = await supabase
-    .from("improvements")
-    .delete()
-    .eq("id", id);
+    const { error } = await supabase
+      .from("improvements")
+      .delete()
+      .eq("id", id);
 
-  if (error) {
-    console.error(error);
-    return;
-  }
+    if (error) {
+      console.error(error);
+      return;
+    }
 
-  setImprovements((prev) =>
-    prev.filter((item) => item.id !== id)
-  );
+    setImprovements((prev) =>
+      prev.filter((item) => item.id !== id)
+    );
 
-  setDeleteOpen(false);
-};
+    setDeleteOpen(false);
+  };
 
   const newItems = improvements.filter(
     (item) => item.status === "Новая"
@@ -149,7 +167,9 @@ const deleteImprovement = async (
     (item) => item.status === "Отклонено"
   );
 
-  const renderCards = (items: Improvement[]) => {
+  const renderCards = (
+    items: Improvement[]
+  ) => {
 
     return (
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
@@ -260,21 +280,22 @@ const deleteImprovement = async (
 
               <button
                 onClick={() => {
-                setSelectedImprovementId(item.id);
-                setRejectOpen(true);
-              }}
+                  setSelectedImprovementId(item.id);
+                  setRejectOpen(true);
+                }}
                 className="bg-red-600 text-white px-4 py-2 rounded-xl text-sm"
               >
                 Отклонить
               </button>
+
               <button
-                 onClick={() => {
-                 setSelectedDeleteId(item.id);
-                 setDeleteOpen(true);
-                 }}
-                  className="bg-gray-900 text-white px-4 py-2 rounded-xl text-sm"
+                onClick={() => {
+                  setSelectedDeleteId(item.id);
+                  setDeleteOpen(true);
+                }}
+                className="bg-gray-900 text-white px-4 py-2 rounded-xl text-sm"
               >
-                 Удалить
+                Удалить
               </button>
 
             </div>
@@ -288,6 +309,7 @@ const deleteImprovement = async (
   };
 
   if (loading) {
+
     return (
       <main className="min-h-screen bg-gradient-to-b from-blue-600 to-white flex items-center justify-center">
 
@@ -304,105 +326,141 @@ const deleteImprovement = async (
 
       <Header />
 
-      <section className="p-4 space-y-8">
+      <section className="p-4">
 
-        <h1 className="text-3xl font-bold text-white">
-          Администрирование
-        </h1>
-        <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
+        <div className="flex flex-col lg:flex-row gap-6 items-start">
 
-          <AdminStats
-             title="Новые"
-             value={newItems.length}
+          <AdminSidebar
+            activeSection={activeSection}
+            setActiveSection={setActiveSection}
           />
 
-          <AdminStats
-            title="В работе"
-             value={inProgressItems.length}
-          />
+          <div className="flex-1 space-y-8">
 
-           <AdminStats
-             title="Внедрено"
-             value={implementedItems.length}
-           />
+            {activeSection === "overview" && (
 
-           <AdminStats
-             title="Отклонено"
-              value={rejectedItems.length}
-           />
+              <>
 
-        </div>
-        <EmployeeForm />
+                <h1 className="text-3xl font-bold text-white">
+                  Обзор системы
+                </h1>
 
-        <div className="space-y-3">
+                <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
 
-          <h2 className="text-xl font-semibold text-white">
-            Новые
-          </h2>
+                  <AdminStats
+                    title="Новые"
+                    value={newItems.length}
+                  />
 
-          {renderCards(newItems)}
+                  <AdminStats
+                    title="В работе"
+                    value={inProgressItems.length}
+                  />
 
-        </div>
+                  <AdminStats
+                    title="Внедрено"
+                    value={implementedItems.length}
+                  />
 
-        <div className="space-y-3">
+                  <AdminStats
+                    title="Отклонено"
+                    value={rejectedItems.length}
+                  />
 
-          <h2 className="text-xl font-semibold text-white">
-            В работе
-          </h2>
+                </div>
 
-          {renderCards(inProgressItems)}
+              </>
 
-        </div>
+            )}
 
-        <div className="space-y-3">
+            {activeSection === "employees" && (
+              <EmployeeForm />
+            )}
 
-          <h2 className="text-xl font-semibold text-white">
-            Внедрено
-          </h2>
+            {activeSection === "improvements" && (
 
-          {renderCards(implementedItems)}
+              <div className="space-y-8">
 
-        </div>
+                <div className="space-y-3">
 
-        <div className="space-y-3">
+                  <h2 className="text-xl font-semibold text-white">
+                    Новые
+                  </h2>
 
-          <h2 className="text-xl font-semibold text-white">
-            Отклонено
-          </h2>
+                  {renderCards(newItems)}
 
-          {renderCards(rejectedItems)}
+                </div>
+
+                <div className="space-y-3">
+
+                  <h2 className="text-xl font-semibold text-white">
+                    В работе
+                  </h2>
+
+                  {renderCards(inProgressItems)}
+
+                </div>
+
+                <div className="space-y-3">
+
+                  <h2 className="text-xl font-semibold text-white">
+                    Внедрено
+                  </h2>
+
+                  {renderCards(implementedItems)}
+
+                </div>
+
+                <div className="space-y-3">
+
+                  <h2 className="text-xl font-semibold text-white">
+                    Отклонено
+                  </h2>
+
+                  {renderCards(rejectedItems)}
+
+                </div>
+
+              </div>
+
+            )}
+
+          </div>
 
         </div>
 
       </section>
-<RejectDialog
-  open={rejectOpen}
-  onOpenChange={setRejectOpen}
-  onConfirm={(reason) => {
 
-    if (!selectedImprovementId) {
-      return;
-    }
+      <RejectDialog
+        open={rejectOpen}
+        onOpenChange={setRejectOpen}
+        onConfirm={(reason) => {
 
-    updateStatus(
-      selectedImprovementId,
-      "Отклонено",
-      reason
-    );
-  }}
-/>
-<DeleteDialog
-  open={deleteOpen}
-  onOpenChange={setDeleteOpen}
-  onConfirm={() => {
+          if (!selectedImprovementId) {
+            return;
+          }
 
-    if (!selectedDeleteId) {
-      return;
-    }
+          updateStatus(
+            selectedImprovementId,
+            "Отклонено",
+            reason
+          );
+        }}
+      />
 
-    deleteImprovement(selectedDeleteId);
-  }}
-/>
+      <DeleteDialog
+        open={deleteOpen}
+        onOpenChange={setDeleteOpen}
+        onConfirm={() => {
+
+          if (!selectedDeleteId) {
+            return;
+          }
+
+          deleteImprovement(selectedDeleteId);
+        }}
+      />
+
     </main>
   );
 }
