@@ -7,6 +7,7 @@ import { Header } from "@/components/layout/Header";
 import { supabase } from "@/lib/supabase";
 import { AdminStats } from "@/components/admin/AdminStats";
 import { DeleteDialog } from "@/components/dialogs/DeleteDialog";
+import { EmployeeForm } from "@/components/admin/EmployeeForm";
 
 type Improvement = {
   id: number;
@@ -330,7 +331,8 @@ const deleteImprovement = async (
               value={rejectedItems.length}
            />
 
-</div>
+        </div>
+        <EmployeeForm />
 
         <div className="space-y-3">
 
