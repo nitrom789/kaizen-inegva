@@ -85,6 +85,23 @@ export function Header() {
       <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl px-6 py-4">
 
         <div className="flex items-center justify-between gap-4">
+          {isAdminPage && (
+
+  <button
+    onClick={() => {
+
+      const event = new CustomEvent(
+        "open-admin-mobile-menu"
+      );
+
+      window.dispatchEvent(event);
+    }}
+    className="lg:hidden text-white border border-white/30 px-4 py-2 rounded-xl text-sm"
+  >
+    Меню
+  </button>
+
+)}
 
           <div className="hidden md:flex items-center gap-2">
 

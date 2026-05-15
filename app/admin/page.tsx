@@ -55,8 +55,27 @@ export default function AdminPage() {
   useState(false);
 
   useEffect(() => {
-    checkAdmin();
-  }, []);
+
+  checkAdmin();
+
+  const handleOpenMenu = () => {
+    setMobileOpen(true);
+  };
+
+  window.addEventListener(
+    "open-admin-mobile-menu",
+    handleOpenMenu
+  );
+
+  return () => {
+
+    window.removeEventListener(
+      "open-admin-mobile-menu",
+      handleOpenMenu
+    );
+  };
+
+}, []);
 
   const checkAdmin = async () => {
 
@@ -329,16 +348,7 @@ export default function AdminPage() {
       <Header />
 
       <section className="p-4">
-        <button
-  onClick={() =>
-    setMobileOpen(true)
-  }
-  className={`lg:hidden mb-4 bg-white/10 backdrop-blur-md border border-white/20 text-white px-4 py-3 rounded-2xl ${
-  mobileOpen ? "hidden" : "block"
-}`}
->
-  Меню
-</button>
+        
 
         <div className="flex flex-col lg:flex-row gap-6 items-start">
 
