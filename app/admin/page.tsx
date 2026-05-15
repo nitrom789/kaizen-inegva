@@ -6,6 +6,7 @@ import { RejectDialog } from "@/components/dialogs/RejectDialog";
 import { Header } from "@/components/layout/Header";
 import { supabase } from "@/lib/supabase";
 import { AdminStats } from "@/components/admin/AdminStats";
+import { DeleteDialog } from "@/components/dialogs/DeleteDialog";
 
 type Improvement = {
   id: number;
@@ -28,6 +29,10 @@ export default function AdminPage() {
   const [selectedImprovementId, setSelectedImprovementId] =
   useState<number | null>(null);
   const [loading, setLoading] = useState(true);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+
+  const [selectedDeleteId, setSelectedDeleteId] =
+  useState<number | null>(null);
 
   useEffect(() => {
     checkAdmin();
@@ -82,29 +87,49 @@ export default function AdminPage() {
     setLoading(false);
   };
 
+  
   const updateStatus = async (
   id: number,
   status: string,
   rejectReason = ""
 ) => {
 
-    
+  const { error } = await supabase
+    .from("improvements")
+    .update({
+      status,
+      reject_reason: rejectReason,
+    })
+    .eq("id", id);
 
-    const { error } = await supabase
-      .from("improvements")
-      .update({
-        status,
-        reject_reason: rejectReason,
-      })
-      .eq("id", id);
+  if (error) {
+    console.error(error);
+    return;
+  }
 
-    if (error) {
-      console.error(error);
-      return;
-    }
+  fetchImprovements();
+};
 
-    fetchImprovements();
-  };
+const deleteImprovement = async (
+  id: number
+) => {
+
+  const { error } = await supabase
+    .from("improvements")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  setImprovements((prev) =>
+    prev.filter((item) => item.id !== id)
+  );
+
+  setDeleteOpen(false);
+};
 
   const newItems = improvements.filter(
     (item) => item.status === "Новая"
@@ -240,6 +265,15 @@ export default function AdminPage() {
               >
                 Отклонить
               </button>
+              <button
+                 onClick={() => {
+                 setSelectedDeleteId(item.id);
+                 setDeleteOpen(true);
+                 }}
+                  className="bg-gray-900 text-white px-4 py-2 rounded-xl text-sm"
+              >
+                 Удалить
+              </button>
 
             </div>
 
@@ -352,6 +386,18 @@ export default function AdminPage() {
       "Отклонено",
       reason
     );
+  }}
+/>
+<DeleteDialog
+  open={deleteOpen}
+  onOpenChange={setDeleteOpen}
+  onConfirm={() => {
+
+    if (!selectedDeleteId) {
+      return;
+    }
+
+    deleteImprovement(selectedDeleteId);
   }}
 />
     </main>
