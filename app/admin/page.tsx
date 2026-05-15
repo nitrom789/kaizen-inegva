@@ -21,8 +21,7 @@ type Improvement = {
   };
 };
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+
 export default function AdminPage() {
 
   const [improvements, setImprovements] = useState<Improvement[]>([]);

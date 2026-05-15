@@ -3,7 +3,6 @@ import { ImprovementCard } from "@/components/cards/ImprovementCard";
 import { supabase } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
-
 export const revalidate = 0;
 export default async function NewPage() {
 
