@@ -1,6 +1,7 @@
 import { Header } from "@/components/layout/Header";
 import { ImprovementCard } from "@/components/cards/ImprovementCard";
 import { supabase } from "@/lib/supabase";
+export const dynamic = "force-dynamic";
 
 export default async function NewPage() {
 
