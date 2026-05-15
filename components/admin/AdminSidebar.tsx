@@ -36,17 +36,17 @@ export function AdminSidebar({
   ];
 
   return (
-    <aside className="w-full lg:w-[300px] bg-white rounded-3xl shadow-2xl border border-white/40 overflow-hidden h-fit">
+    <aside className="w-full lg:w-[260px] bg-white rounded-3xl shadow-lg border border-white/40 overflow-hidden h-fit">
 
-      <div className="p-6 border-b border-gray-100">
+      <div className="px-5 pt-5 pb-4 border-b border-gray-100">
 
-        <h2 className="text-2xl font-bold text-gray-900">
+        <h2 className="text-lg font-bold text-gray-900">
           Администрирование
         </h2>
 
       </div>
 
-      <div className="p-4 space-y-2">
+      <div className="p-3 space-y-1">
 
         {items.map((item) => {
 
@@ -59,7 +59,7 @@ export function AdminSidebar({
               onClick={() =>
                 setActiveSection(item.key)
               }
-              className={`group relative w-full flex items-center gap-4 px-5 py-4 rounded-2xl transition-all duration-200 ${
+              className={`group relative w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
                 activeSection === item.key
                   ? "bg-blue-50 text-blue-600"
                   : "text-gray-700 hover:bg-gray-50"
@@ -68,12 +68,12 @@ export function AdminSidebar({
 
               {activeSection === item.key && (
 
-                <div className="absolute left-0 top-3 bottom-3 w-1 rounded-r-full bg-blue-600" />
+                <div className="absolute left-0 top-2 bottom-2 w-1 rounded-r-full bg-blue-600" />
 
               )}
 
               <Icon
-                size={20}
+                size={18}
                 className={`transition ${
                   activeSection === item.key
                     ? "text-blue-600"
@@ -81,7 +81,7 @@ export function AdminSidebar({
                 }`}
               />
 
-              <span className="font-medium text-base">
+              <span className="font-medium text-[15px]">
                 {item.label}
               </span>
 
@@ -92,15 +92,15 @@ export function AdminSidebar({
 
       </div>
 
-      <div className="px-6 py-5 border-t border-gray-100 flex items-center justify-between">
+      <div className="px-5 py-4 border-t border-gray-100 flex items-center justify-between">
 
-        <span className="text-sm text-gray-400">
+        <span className="text-xs text-gray-400">
           v1.0.0
         </span>
 
         <button className="text-gray-400 hover:text-gray-600 transition">
 
-          <Settings size={18} />
+          <Settings size={16} />
 
         </button>
 
