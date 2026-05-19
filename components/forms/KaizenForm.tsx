@@ -4,8 +4,7 @@ import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { supabase } from "@/lib/supabase";
-import { toast } from "sonner";
+
 import {
   Popover,
   PopoverContent,
@@ -20,13 +19,34 @@ import {
   CommandItem,
 } from "@/components/ui/command";
 
-export function KaizenForm() {
+import { supabase } from "@/lib/supabase";
+import { toast } from "sonner";
 
-  const [employeeId, setEmployeeId] = useState("");
-  const [employees, setEmployees] = useState<any[]>([]);
+type Employee = {
+  id: number;
+  full_name: string;
+  site_id: number;
+};
 
-  const [category, setCategory] = useState("");
-  const [description, setDescription] = useState("");
+type KaizenFormProps = {
+  siteId?: number;
+};
+
+export function KaizenForm({
+  siteId,
+}: KaizenFormProps) {
+
+  const [employees, setEmployees] =
+    useState<Employee[]>([]);
+
+  const [employeeId, setEmployeeId] =
+    useState("");
+
+  const [category, setCategory] =
+    useState("");
+
+  const [description, setDescription] =
+    useState("");
 
   useEffect(() => {
     fetchEmployees();
@@ -34,10 +54,17 @@ export function KaizenForm() {
 
   const fetchEmployees = async () => {
 
-    const { data, error } = await supabase
+    let query = supabase
       .from("employees")
       .select("*")
       .order("full_name");
+
+    if (siteId) {
+      query = query.eq("site_id", siteId);
+    }
+
+    const { data, error } =
+      await query;
 
     if (error) {
       console.error(error);
@@ -49,29 +76,67 @@ export function KaizenForm() {
 
   const handleSubmit = async () => {
 
-    if (!employeeId || !category || !description) {
-      toast.error("Заполните все поля");
+    if (
+      !employeeId ||
+      !category ||
+      !description
+    ) {
+      toast.error(
+        "Заполните все поля"
+      );
+
       return;
     }
 
-    const { error } = await supabase
-      .from("improvements")
-      .insert([
-        {
-          employee_id: employeeId,
-          category,
-          description,
-          status: "Новая"
-        },
-      ]);
+    const selectedEmployee =
+      employees.find(
+        (item) =>
+          item.id.toString() ===
+          employeeId
+      );
+
+    if (!selectedEmployee) {
+
+      toast.error(
+        "Сотрудник не найден"
+      );
+
+      return;
+    }
+
+    const { error } =
+      await supabase
+        .from("improvements")
+        .insert([
+          {
+            employee_id:
+              employeeId,
+
+            category,
+
+            description,
+
+            status: "Новая",
+
+            site_id:
+              selectedEmployee.site_id,
+          },
+        ]);
 
     if (error) {
+
       console.error(error);
-      toast.error("Ошибка при отправке");
+
+      toast.error(
+        "Ошибка при отправке"
+      );
+
       return;
     }
 
-    toast.success("Предложение успешно отправлено");
+    toast.success(
+      "Предложение успешно отправлено"
+    );
 
     setEmployeeId("");
     setCategory("");
@@ -102,69 +167,72 @@ export function KaizenForm() {
 
         <Popover>
 
-  <PopoverTrigger asChild>
+          <PopoverTrigger asChild>
 
-    <button
-      type="button"
-      className="w-full h-12 rounded-xl border px-4 bg-white flex items-center justify-between text-left"
-    >
+            <button
+              type="button"
+              className="w-full h-12 rounded-xl border px-4 bg-white flex items-center justify-between text-left"
+            >
 
-      <span className="truncate">
+              <span className="truncate">
 
-        {employeeId
-          ? employees.find(
-              (item) =>
-                item.id.toString() === employeeId
-            )?.full_name
-          : "Выберите сотрудника"}
+                {employeeId
+                  ? employees.find(
+                      (item) =>
+                        item.id.toString() ===
+                        employeeId
+                    )?.full_name
+                  : "Выберите сотрудника"}
 
-      </span>
+              </span>
 
-    </button>
+            </button>
 
-  </PopoverTrigger>
+          </PopoverTrigger>
 
-  <PopoverContent
-    className="w-[350px] p-0"
-  >
+          <PopoverContent className="w-[350px] p-0">
 
-    <Command>
+            <Command>
 
-      <CommandInput
-        placeholder="Введите фамилию..."
-      />
+              <CommandInput
+                placeholder="Введите фамилию..."
+              />
 
-      <CommandEmpty>
-        Сотрудник не найден
-      </CommandEmpty>
+              <CommandEmpty>
+                Сотрудник не найден
+              </CommandEmpty>
 
-      <CommandGroup className="max-h-64 overflow-y-auto">
+              <CommandGroup className="max-h-64 overflow-y-auto">
 
-        {employees.map((item) => (
+                {employees.map(
+                  (item) => (
 
-          <CommandItem
-            key={item.id}
-            value={item.full_name}
-            onSelect={() =>
-              setEmployeeId(
-                item.id.toString()
-              )
-            }
-          >
+                    <CommandItem
+                      key={item.id}
+                      value={
+                        item.full_name
+                      }
+                      onSelect={() =>
+                        setEmployeeId(
+                          item.id.toString()
+                        )
+                      }
+                    >
 
-            {item.full_name}
+                      {item.full_name}
 
-          </CommandItem>
+                    </CommandItem>
 
-        ))}
+                  )
+                )}
 
-      </CommandGroup>
+              </CommandGroup>
 
-    </Command>
+            </Command>
 
-  </PopoverContent>
+          </PopoverContent>
 
-</Popover>
+        </Popover>
 
       </div>
 
@@ -177,7 +245,11 @@ export function KaizenForm() {
 
         <select
           value={category}
-          onChange={(e) => setCategory(e.target.value)}
+          onChange={(e) =>
+            setCategory(
+              e.target.value
+            )
+          }
           className="w-full h-12 rounded-xl border px-4 bg-white"
         >
 
@@ -218,7 +290,11 @@ export function KaizenForm() {
 
         <textarea
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={(e) =>
+            setDescription(
+              e.target.value
+            )
+          }
           className="w-full rounded-xl border px-4 py-3 min-h-[160px] resize-none"
           placeholder="Опишите ваше предложение..."
         />
