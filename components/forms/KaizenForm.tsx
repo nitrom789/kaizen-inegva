@@ -6,6 +6,19 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
 
 export function KaizenForm() {
 
@@ -87,26 +100,71 @@ export function KaizenForm() {
           Сотрудник
         </label>
 
-        <select
-          value={employeeId}
-          onChange={(e) => setEmployeeId(e.target.value)}
-          className="w-full h-12 rounded-xl border px-4 bg-white"
-        >
+        <Popover>
 
-          <option value="">
-            Выберите сотрудника
-          </option>
+  <PopoverTrigger asChild>
 
-          {employees.map((item) => (
-            <option
-              key={item.id}
-              value={item.id}
-            >
-              {item.full_name}
-            </option>
-          ))}
+    <button
+      type="button"
+      className="w-full h-12 rounded-xl border px-4 bg-white flex items-center justify-between text-left"
+    >
 
-        </select>
+      <span className="truncate">
+
+        {employeeId
+          ? employees.find(
+              (item) =>
+                item.id.toString() === employeeId
+            )?.full_name
+          : "Выберите сотрудника"}
+
+      </span>
+
+    </button>
+
+  </PopoverTrigger>
+
+  <PopoverContent
+    className="w-[350px] p-0"
+  >
+
+    <Command>
+
+      <CommandInput
+        placeholder="Введите фамилию..."
+      />
+
+      <CommandEmpty>
+        Сотрудник не найден
+      </CommandEmpty>
+
+      <CommandGroup className="max-h-64 overflow-y-auto">
+
+        {employees.map((item) => (
+
+          <CommandItem
+            key={item.id}
+            value={item.full_name}
+            onSelect={() =>
+              setEmployeeId(
+                item.id.toString()
+              )
+            }
+          >
+
+            {item.full_name}
+
+          </CommandItem>
+
+        ))}
+
+      </CommandGroup>
+
+    </Command>
+
+  </PopoverContent>
+
+</Popover>
 
       </div>
 
