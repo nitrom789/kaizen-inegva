@@ -20,6 +20,7 @@ type Improvement = {
   description: string;
   status: string;
   reject_reason?: string;
+  employee_id: number;
 
   employees?: {
     full_name: string;
@@ -129,27 +130,62 @@ export default function AdminPage() {
     setLoading(false);
   };
 
-  const updateStatus = async (
-    id: number,
-    status: string,
-    rejectReason = ""
-  ) => {
+const updateStatus = async (
+  id: number,
+  status: string,
+  rejectReason = ""
+) => {
 
-    const { error } = await supabase
-      .from("improvements")
-      .update({
-        status,
-        reject_reason: rejectReason,
-      })
-      .eq("id", id);
+  const currentImprovement =
+    improvements.find(
+      (item) => item.id === id
+    );
 
-    if (error) {
-      console.error(error);
-      return;
+  const { error } = await supabase
+    .from("improvements")
+    .update({
+      status,
+      reject_reason: rejectReason,
+    })
+    .eq("id", id);
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  if (
+    status === "Внедрено" &&
+    currentImprovement
+  ) {
+
+    const { error: rewardError } =
+      await supabase
+        .from("reward_transactions")
+        .insert([
+          {
+            employee_id:
+              currentImprovement.employee_id,
+
+            improvement_id:
+              currentImprovement.id,
+
+            points: 200,
+
+            type: "reward",
+
+            comment:
+              "Внедренное улучшение",
+          },
+        ]);
+
+    if (rewardError) {
+      console.error(rewardError);
     }
+  }
 
-    fetchImprovements();
-  };
+  fetchImprovements();
+};
 
   const deleteImprovement = async (
     id: number
