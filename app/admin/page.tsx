@@ -52,31 +52,32 @@ export default function AdminPage() {
 
   const [activeSection, setActiveSection] =
     useState("overview");
-    const [mobileOpen, setMobileOpen] =
-  useState(false);
+
+  const [mobileOpen, setMobileOpen] =
+    useState(false);
 
   useEffect(() => {
 
-  checkAdmin();
+    checkAdmin();
 
-  const handleOpenMenu = () => {
-    setMobileOpen(true);
-  };
+    const handleOpenMenu = () => {
+      setMobileOpen(true);
+    };
 
-  window.addEventListener(
-    "open-admin-mobile-menu",
-    handleOpenMenu
-  );
-
-  return () => {
-
-    window.removeEventListener(
+    window.addEventListener(
       "open-admin-mobile-menu",
       handleOpenMenu
     );
-  };
 
-}, []);
+    return () => {
+
+      window.removeEventListener(
+        "open-admin-mobile-menu",
+        handleOpenMenu
+      );
+    };
+
+  }, []);
 
   const checkAdmin = async () => {
 
@@ -130,78 +131,78 @@ export default function AdminPage() {
     setLoading(false);
   };
 
-const updateStatus = async (
-  id: number,
-  status: string,
-  rejectReason = ""
-) => {
+  const updateStatus = async (
+    id: number,
+    status: string,
+    rejectReason = ""
+  ) => {
 
-  const currentImprovement =
-    improvements.find(
-      (item) => item.id === id
-    );
+    const currentImprovement =
+      improvements.find(
+        (item) => item.id === id
+      );
 
-  const { error } = await supabase
-    .from("improvements")
-    .update({
-      status,
-      reject_reason: rejectReason,
-    })
-    .eq("id", id);
+    const { error } = await supabase
+      .from("improvements")
+      .update({
+        status,
+        reject_reason: rejectReason,
+      })
+      .eq("id", id);
 
-  if (error) {
-    console.error(error);
-    return;
-  }
-
-  if (
-  status === "Внедрено" &&
-  currentImprovement
-) {
-
-  const {
-    data: existingReward,
-  } = await supabase
-    .from("reward_transactions")
-    .select("id")
-    .eq(
-      "improvement_id",
-      currentImprovement.id
-    )
-    .eq("type", "reward")
-    .maybeSingle();
-
-  if (!existingReward) {
-
-    const {
-      error: rewardError,
-    } = await supabase
-      .from("reward_transactions")
-      .insert([
-        {
-          employee_id:
-            currentImprovement.employee_id,
-
-          improvement_id:
-            currentImprovement.id,
-
-          points: 200,
-
-          type: "reward",
-
-          comment:
-            "Внедренное улучшение",
-        },
-      ]);
-
-    if (rewardError) {
-      console.error(rewardError);
+    if (error) {
+      console.error(error);
+      return;
     }
-  }
 
+    if (
+      status === "Внедрено" &&
+      currentImprovement
+    ) {
 
-  fetchImprovements();
-};
+      const {
+        data: existingReward,
+      } = await supabase
+        .from("reward_transactions")
+        .select("id")
+        .eq(
+          "improvement_id",
+          currentImprovement.id
+        )
+        .eq("type", "reward")
+        .maybeSingle();
+
+      if (!existingReward) {
+
+        const {
+          error: rewardError,
+        } = await supabase
+          .from("reward_transactions")
+          .insert([
+            {
+              employee_id:
+                currentImprovement.employee_id,
+
+              improvement_id:
+                currentImprovement.id,
+
+              points: 200,
+
+              type: "reward",
+
+              comment:
+                "Внедренное улучшение",
+            },
+          ]);
+
+        if (rewardError) {
+          console.error(rewardError);
+        }
+      }
+    }
+
+    fetchImprovements();
+  };
 
   const deleteImprovement = async (
     id: number
@@ -400,7 +401,6 @@ const updateStatus = async (
       <Header />
 
       <section className="p-4">
-        
 
         <div className="flex flex-col lg:flex-row gap-6 items-start">
 
