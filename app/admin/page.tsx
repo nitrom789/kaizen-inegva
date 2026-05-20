@@ -155,34 +155,50 @@ const updateStatus = async (
   }
 
   if (
-    status === "Внедрено" &&
-    currentImprovement
-  ) {
-    console.log(currentImprovement);
-    const { error: rewardError } =
-      await supabase
-        .from("reward_transactions")
-        .insert([
-          {
-            employee_id:
-              currentImprovement.employee_id,
+  status === "Внедрено" &&
+  currentImprovement
+) {
 
-            improvement_id:
-              currentImprovement.id,
+  const {
+    data: existingReward,
+  } = await supabase
+    .from("reward_transactions")
+    .select("id")
+    .eq(
+      "improvement_id",
+      currentImprovement.id
+    )
+    .eq("type", "reward")
+    .maybeSingle();
 
-            points: 200,
+  if (!existingReward) {
 
-            type: "reward",
+    const {
+      error: rewardError,
+    } = await supabase
+      .from("reward_transactions")
+      .insert([
+        {
+          employee_id:
+            currentImprovement.employee_id,
 
-            comment:
-              "Внедренное улучшение",
-          },
-        ]);
+          improvement_id:
+            currentImprovement.id,
+
+          points: 200,
+
+          type: "reward",
+
+          comment:
+            "Внедренное улучшение",
+        },
+      ]);
 
     if (rewardError) {
       console.error(rewardError);
     }
   }
+
 
   fetchImprovements();
 };
