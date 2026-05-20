@@ -21,6 +21,7 @@ type Improvement = {
   status: string;
   reject_reason?: string;
   employee_id: number;
+  rewarded: boolean;
 
   employees?: {
     full_name: string;
@@ -131,7 +132,7 @@ export default function AdminPage() {
     setLoading(false);
   };
 
-  const updateStatus = async (
+const updateStatus = async (
   id: number,
   status: string,
   rejectReason = ""
@@ -145,9 +146,6 @@ export default function AdminPage() {
   if (!currentImprovement) {
     return;
   }
-
-  const wasImplemented =
-    currentImprovement.status === "Внедрено";
 
   const { error } = await supabase
     .from("improvements")
@@ -164,47 +162,49 @@ export default function AdminPage() {
 
   if (
     status === "Внедрено" &&
-    !wasImplemented
+    !currentImprovement.rewarded
   ) {
 
     const {
-      data: existingReward,
+      error: rewardError,
     } = await supabase
       .from("reward_transactions")
-      .select("id")
+      .insert([
+        {
+          employee_id:
+            currentImprovement.employee_id,
+
+          improvement_id:
+            currentImprovement.id,
+
+          points: 200,
+
+          type: "reward",
+
+          comment:
+            "Внедренное улучшение",
+        },
+      ]);
+
+    if (rewardError) {
+      console.error(rewardError);
+      return;
+    }
+
+    const {
+      error: rewardedError,
+    } = await supabase
+      .from("improvements")
+      .update({
+        rewarded: true,
+      })
       .eq(
-        "improvement_id",
+        "id",
         currentImprovement.id
-      )
-      .eq("type", "reward")
-      .maybeSingle();
+      );
 
-    if (!existingReward) {
-
-      const {
-        error: rewardError,
-      } = await supabase
-        .from("reward_transactions")
-        .insert([
-          {
-            employee_id:
-              currentImprovement.employee_id,
-
-            improvement_id:
-              currentImprovement.id,
-
-            points: 200,
-
-            type: "reward",
-
-            comment:
-              "Внедренное улучшение",
-          },
-        ]);
-
-      if (rewardError) {
-        console.error(rewardError);
-      }
+    if (rewardedError) {
+      console.error(rewardedError);
     }
   }
 
