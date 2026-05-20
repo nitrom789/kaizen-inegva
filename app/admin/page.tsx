@@ -158,7 +158,7 @@ const updateStatus = async (
     status === "Внедрено" &&
     currentImprovement
   ) {
-
+    console.log(currentImprovement);
     const { error: rewardError } =
       await supabase
         .from("reward_transactions")
