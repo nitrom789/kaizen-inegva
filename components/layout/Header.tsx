@@ -27,39 +27,47 @@ export function Header() {
   const isAdminPage =
     pathname.startsWith("/admin");
 
-  const navItems = isAdminPage
-    ? [
-        {
-          label: "Главная",
-          href: "/",
-        },
-      ]
-    : [
-        {
-          label: "Главная",
-          href: "/",
-        },
-        {
-          label: "Новая",
-          href: "/new",
-        },
-        {
-          label: "В работе",
-          href: "/in-progress",
-        },
-        {
-          label: "Внедрено",
-          href: "/implemented",
-        },
-        {
-          label: "Отклонено",
-          href: "/rejected",
-        },
-      ];
+  const isArgo =
+  pathname.startsWith("/argo");
 
-  useEffect(() => {
-    checkUser();
-  }, []);
+const isBukovaya =
+  pathname.startsWith("/bukovaya");
+
+const basePath = isArgo
+  ? "/argo"
+  : isBukovaya
+  ? "/bukovaya"
+  : "";
+
+const navItems = isAdminPage
+  ? [
+      {
+        label: "Главная",
+        href: "/",
+      },
+    ]
+  : [
+      {
+        label: "Главная",
+        href: basePath || "/",
+      },
+      {
+        label: "Новая",
+        href: `${basePath}/new`,
+      },
+      {
+        label: "В работе",
+        href: `${basePath}/in-progress`,
+      },
+      {
+        label: "Внедрено",
+        href: `${basePath}/implemented`,
+      },
+      {
+        label: "Отклонено",
+        href: `${basePath}/rejected`,
+      },
+    ];
 
   const checkUser = async () => {
 
