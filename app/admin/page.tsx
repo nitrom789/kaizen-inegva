@@ -132,77 +132,84 @@ export default function AdminPage() {
   };
 
   const updateStatus = async (
-    id: number,
-    status: string,
-    rejectReason = ""
-  ) => {
+  id: number,
+  status: string,
+  rejectReason = ""
+) => {
 
-    const currentImprovement =
-      improvements.find(
-        (item) => item.id === id
-      );
+  const currentImprovement =
+    improvements.find(
+      (item) => item.id === id
+    );
 
-    const { error } = await supabase
-      .from("improvements")
-      .update({
-        status,
-        reject_reason: rejectReason,
-      })
-      .eq("id", id);
+  if (!currentImprovement) {
+    return;
+  }
 
-    if (error) {
-      console.error(error);
-      return;
-    }
+  const wasImplemented =
+    currentImprovement.status === "Внедрено";
 
-    if (
-      status === "Внедрено" &&
-      currentImprovement
-    ) {
+  const { error } = await supabase
+    .from("improvements")
+    .update({
+      status,
+      reject_reason: rejectReason,
+    })
+    .eq("id", id);
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  if (
+    status === "Внедрено" &&
+    !wasImplemented
+  ) {
+
+    const {
+      data: existingReward,
+    } = await supabase
+      .from("reward_transactions")
+      .select("id")
+      .eq(
+        "improvement_id",
+        currentImprovement.id
+      )
+      .eq("type", "reward")
+      .maybeSingle();
+
+    if (!existingReward) {
 
       const {
-        data: existingReward,
+        error: rewardError,
       } = await supabase
         .from("reward_transactions")
-        .select("id")
-        .eq(
-          "improvement_id",
-          currentImprovement.id
-        )
-        .eq("type", "reward")
-        .maybeSingle();
+        .insert([
+          {
+            employee_id:
+              currentImprovement.employee_id,
 
-      if (!existingReward) {
+            improvement_id:
+              currentImprovement.id,
 
-        const {
-          error: rewardError,
-        } = await supabase
-          .from("reward_transactions")
-          .insert([
-            {
-              employee_id:
-                currentImprovement.employee_id,
+            points: 200,
 
-              improvement_id:
-                currentImprovement.id,
+            type: "reward",
 
-              points: 200,
+            comment:
+              "Внедренное улучшение",
+          },
+        ]);
 
-              type: "reward",
-
-              comment:
-                "Внедренное улучшение",
-            },
-          ]);
-
-        if (rewardError) {
-          console.error(rewardError);
-        }
+      if (rewardError) {
+        console.error(rewardError);
       }
     }
+  }
 
-    fetchImprovements();
-  };
+  fetchImprovements();
+};
 
   const deleteImprovement = async (
     id: number
