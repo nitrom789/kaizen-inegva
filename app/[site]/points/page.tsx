@@ -61,10 +61,10 @@ export default function PointsPage() {
     setEmployees(employeesData);
 
     const employeeIds =
-        employeesData.map(
-            (item) =>
-            item.id.toString()
-  );
+      employeesData.map(
+        (item) => item.id
+      );
+
     if (employeeIds.length === 0) {
       setLeaderboard([]);
       return;
@@ -77,7 +77,7 @@ export default function PointsPage() {
       .select("*")
       .in(
         "employee_id",
-        employeeIds
+        employeeIds.map(String)
       );
 
     const totals: Record<
@@ -93,7 +93,7 @@ export default function PointsPage() {
         }
 
         totals[item.employee_id] +=
-            Number(item.points);
+          Number(item.points);
       });
 
     const leaderboardData =
@@ -155,8 +155,6 @@ export default function PointsPage() {
         <div className="bg-white rounded-3xl shadow-xl p-6 space-y-4">
 
           {leaderboard.map((item) => {
-            console.log(item);
-            console.log(employees);
 
             const employee =
               employees.find(
