@@ -2,11 +2,22 @@
 
 import { useState } from "react";
 
+import * as XLSX from "xlsx";
+
+import { saveAs } from "file-saver";
+
 import { Button } from "@/components/ui/button";
 
 import { supabase } from "@/lib/supabase";
 
 import { toast } from "sonner";
+
+type Employee = {
+  id: number;
+  full_name: string;
+  pin_code: string;
+  site_id: number;
+};
 
 export function EmployeeForm() {
 
@@ -54,6 +65,74 @@ export function EmployeeForm() {
 
       return pinCode;
     };
+
+  const exportPins = async (
+    siteId: number,
+    siteName: string
+  ) => {
+
+    const {
+      data: employeesData,
+    } = await supabase
+      .from("employees")
+      .select("*")
+      .eq(
+        "site_id",
+        siteId
+      )
+      .order("full_name");
+
+    if (!employeesData) {
+      return;
+    }
+
+    const exportData =
+      employeesData.map(
+        (item: Employee) => ({
+          "ФИО":
+            item.full_name,
+
+          "PIN-код":
+            item.pin_code,
+        })
+      );
+
+    const worksheet =
+      XLSX.utils.json_to_sheet(
+        exportData
+      );
+
+    const workbook =
+      XLSX.utils.book_new();
+
+    XLSX.utils.book_append_sheet(
+      workbook,
+      worksheet,
+      "PIN-коды"
+    );
+
+    const excelBuffer =
+      XLSX.write(
+        workbook,
+        {
+          bookType: "xlsx",
+          type: "array",
+        }
+      );
+
+    const blob = new Blob(
+      [excelBuffer],
+      {
+        type:
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
+      }
+    );
+
+    saveAs(
+      blob,
+      `pins-${siteName}.xlsx`
+    );
+  };
 
   const handleSubmit = async () => {
 
@@ -113,97 +192,143 @@ export function EmployeeForm() {
   };
 
   return (
-    <div className="bg-white rounded-2xl p-5 shadow-xl space-y-4">
+    <div className="space-y-6">
 
-      <h2 className="text-xl font-semibold">
+      <div className="bg-white rounded-2xl p-5 shadow-xl space-y-4">
 
-        Добавить сотрудника
+        <h2 className="text-xl font-semibold">
 
-      </h2>
+          Добавить сотрудника
 
-      <div className="space-y-2">
+        </h2>
 
-        <label className="text-sm font-medium">
+        <div className="space-y-2">
 
-          ФИО
+          <label className="text-sm font-medium">
 
-        </label>
+            ФИО
 
-        <input
-          value={fullName}
-          onChange={(e) =>
-            setFullName(
-              e.target.value
-            )
-          }
-          placeholder="Введите ФИО"
-          className="w-full h-12 rounded-xl border px-4"
-        />
+          </label>
 
-      </div>
+          <input
+            value={fullName}
+            onChange={(e) =>
+              setFullName(
+                e.target.value
+              )
+            }
+            placeholder="Введите ФИО"
+            className="w-full h-12 rounded-xl border px-4"
+          />
 
-      <div className="space-y-2">
+        </div>
 
-        <label className="text-sm font-medium">
+        <div className="space-y-2">
 
-          Площадка
+          <label className="text-sm font-medium">
 
-        </label>
+            Площадка
 
-        <select
-          value={siteId}
-          onChange={(e) =>
-            setSiteId(
-              e.target.value
-            )
-          }
-          className="w-full h-12 rounded-xl border px-4"
+          </label>
+
+          <select
+            value={siteId}
+            onChange={(e) =>
+              setSiteId(
+                e.target.value
+              )
+            }
+            className="w-full h-12 rounded-xl border px-4"
+          >
+
+            <option value="1">
+              Арго
+            </option>
+
+            <option value="2">
+              Буковая
+            </option>
+
+          </select>
+
+        </div>
+
+        <div className="space-y-2">
+
+          <label className="text-sm font-medium">
+
+            Фото URL
+
+          </label>
+
+          <input
+            value={photoUrl}
+            onChange={(e) =>
+              setPhotoUrl(
+                e.target.value
+              )
+            }
+            placeholder="https://..."
+            className="w-full h-12 rounded-xl border px-4"
+          />
+
+        </div>
+
+        <Button
+          onClick={handleSubmit}
+          disabled={loading}
+          className="w-full"
         >
 
-          <option value="1">
-            Арго
-          </option>
+          {loading
+            ? "Добавление..."
+            : "Добавить сотрудника"}
 
-          <option value="2">
-            Буковая
-          </option>
-
-        </select>
+        </Button>
 
       </div>
 
-      <div className="space-y-2">
+      <div className="bg-white rounded-2xl p-5 shadow-xl space-y-4">
 
-        <label className="text-sm font-medium">
+        <h2 className="text-xl font-semibold">
 
-          Фото URL
+          Экспорт PIN-кодов
 
-        </label>
+        </h2>
 
-        <input
-          value={photoUrl}
-          onChange={(e) =>
-            setPhotoUrl(
-              e.target.value
-            )
-          }
-          placeholder="https://..."
-          className="w-full h-12 rounded-xl border px-4"
-        />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+          <button
+            onClick={() =>
+              exportPins(
+                1,
+                "argo"
+              )
+            }
+            className="h-12 rounded-xl bg-blue-600 text-white font-medium"
+          >
+
+            Экспорт Арго
+
+          </button>
+
+          <button
+            onClick={() =>
+              exportPins(
+                2,
+                "bukovaya"
+              )
+            }
+            className="h-12 rounded-xl bg-green-600 text-white font-medium"
+          >
+
+            Экспорт Буковая
+
+          </button>
+
+        </div>
 
       </div>
-
-      <Button
-        onClick={handleSubmit}
-        disabled={loading}
-        className="w-full"
-      >
-
-        {loading
-          ? "Добавление..."
-          : "Добавить сотрудника"}
-
-      </Button>
 
     </div>
   );
