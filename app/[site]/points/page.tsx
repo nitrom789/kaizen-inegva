@@ -44,15 +44,15 @@ export default function PointsPage({
         : "Буковая";
 
     const { data: employeesData } =
-      await supabase
-        .from("employees")
-        .select("*")
-        .eq(
-            "site_id",
-            params.site === "argo"
-                ? 1
-                : 2
-);
+  await supabase
+    .from("employees")
+    .select("*")
+    .eq(
+      "site_id",
+      params.site === "argo"
+        ? 1
+        : 2
+    );
 
     if (!employeesData) {
       return;
