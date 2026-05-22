@@ -13,6 +13,8 @@ import { supabase } from "@/lib/supabase";
 import { AdminStats } from "@/components/admin/AdminStats";
 import { EmployeeForm } from "@/components/admin/EmployeeForm";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { RewardsManagement } from "@/components/admin/RewardsManagement";
+
 
 type Improvement = {
   id: number;
@@ -505,9 +507,11 @@ const updateStatus = async (
                 </div>
 
               </div>
-
+              
             )}
-
+                {activeSection === "rewards" && (
+                <RewardsManagement />
+                )}
           </div>
 
         </div>
