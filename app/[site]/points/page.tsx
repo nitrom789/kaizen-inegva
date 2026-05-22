@@ -22,6 +22,7 @@ export default function PointsPage({
     site: string;
   };
 }) {
+    console.log(params.site);
 
   const [employees, setEmployees] =
     useState<Employee[]>([]);
