@@ -15,14 +15,16 @@ type LeaderboardItem = {
   total: number;
 };
 
-export default function PointsPage({
+export default async function PointsPage({
   params,
 }: {
-  params: {
+  params: Promise<{
     site: string;
-  };
+  }>;
 }) {
-    console.log(params.site);
+
+  const { site } = await params;
+    console.log(site);
 
   const [employees, setEmployees] =
     useState<Employee[]>([]);
@@ -47,7 +49,7 @@ export default function PointsPage({
     .select("*")
     .eq(
       "site_id",
-      params.site === "argo"
+      site === "argo"
         ? 1
         : 2
     );
@@ -117,7 +119,7 @@ export default function PointsPage({
     }
 
     window.location.href =
-      `/${params.site}/points/${pinCode}`;
+      `/${site}/points/${pinCode}`;
   };
 
   return (
@@ -137,7 +139,7 @@ export default function PointsPage({
 
             Площадка:
             {" "}
-            {params.site === "argo"
+            {site === "argo"
               ? "Арго"
               : "Буковая"}
 
