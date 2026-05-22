@@ -42,6 +42,11 @@ export function AdminSidebar({
       label: "Сотрудники",
       icon: Users,
     },
+    {
+      key: "rewards",
+      label: "Баллы",
+      icon: Settings,
+},
   ];
 
   return (
@@ -59,7 +64,7 @@ export function AdminSidebar({
       )}
 
       <aside
-        className={`fixed lg:static top-0 left-0 h-screen lg:h-fit w-[290px] bg-white shadow-2xl border-r border-gray-100 z-50 transition-transform duration-300 ${
+        className={`fixed lg:static top-0 left-0 min-h-screen lg:h-fit w-[290px] bg-white shadow-2xl border-r border-gray-100 z-50 transition-transform duration-300 ${
           mobileOpen
             ? "translate-x-0"
             : "-translate-x-full lg:translate-x-0"
