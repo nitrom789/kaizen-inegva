@@ -201,47 +201,7 @@ export function RewardsManagement() {
   return (
     <div className="space-y-6">
 
-      <div className="bg-white rounded-3xl shadow-xl p-6 space-y-4">
-
-        <h2 className="text-2xl font-bold">
-
-          Экспорт PIN-кодов
-
-        </h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-          <button
-            onClick={() =>
-              exportPins(
-                1,
-                "argo"
-              )
-            }
-            className="h-12 rounded-xl bg-blue-600 text-white font-medium"
-          >
-
-            Экспорт Арго
-
-          </button>
-
-          <button
-            onClick={() =>
-              exportPins(
-                2,
-                "bukovaya"
-              )
-            }
-            className="h-12 rounded-xl bg-green-600 text-white font-medium"
-          >
-
-            Экспорт Буковая
-
-          </button>
-
-        </div>
-
-      </div>
+     
 
       <div className="bg-white rounded-3xl shadow-xl p-6 space-y-4">
 
