@@ -119,7 +119,7 @@ export default async function PointsPage({
     }
 
     window.location.href =
-      `/${site}/points/${pinCode}`;
+  `/${site}/points/${pinCode}`;
   };
 
   return (
