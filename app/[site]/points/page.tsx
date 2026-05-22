@@ -1,0 +1,223 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
+import { supabase } from "@/lib/supabase";
+
+type Employee = {
+  id: number;
+  full_name: string;
+  pin_code: string;
+};
+
+type LeaderboardItem = {
+  employee_id: number;
+  total: number;
+};
+
+export default function PointsPage({
+  params,
+}: {
+  params: {
+    site: string;
+  };
+}) {
+
+  const [employees, setEmployees] =
+    useState<Employee[]>([]);
+
+  const [leaderboard, setLeaderboard] =
+    useState<LeaderboardItem[]>([]);
+
+  const [pinCode, setPinCode] =
+    useState("");
+
+  useEffect(() => {
+    fetchLeaderboard();
+  }, []);
+
+  const fetchLeaderboard = async () => {
+
+    const siteName =
+      params.site === "argo"
+        ? "Арго"
+        : "Буковая";
+
+    const { data: employeesData } =
+      await supabase
+        .from("employees")
+        .select("*")
+        .eq(
+            "site_id",
+            params.site === "argo"
+                ? 1
+                : 2
+);
+
+    if (!employeesData) {
+      return;
+    }
+
+    setEmployees(employeesData);
+
+    const employeeIds =
+      employeesData.map(
+        (item) => item.id
+      );
+
+    const {
+      data: rewardsData,
+    } = await supabase
+      .from("reward_transactions")
+      .select("*")
+      .in(
+        "employee_id",
+        employeeIds
+      );
+
+    const totals: Record<
+      number,
+      number
+    > = {};
+
+    rewardsData?.forEach((item) => {
+
+      if (!totals[item.employee_id]) {
+        totals[item.employee_id] = 0;
+      }
+
+      totals[item.employee_id] +=
+        item.points;
+    });
+
+    const leaderboardData =
+      employeeIds.map((id) => ({
+        employee_id: id,
+        total: totals[id] || 0,
+      }));
+
+    leaderboardData.sort(
+      (a, b) => b.total - a.total
+    );
+
+    setLeaderboard(
+      leaderboardData
+    );
+  };
+
+  const handleOpenCabinet = () => {
+
+    const employee =
+      employees.find(
+        (item) =>
+          item.pin_code === pinCode
+      );
+
+    if (!employee) {
+      alert("Неверный PIN");
+      return;
+    }
+
+    window.location.href =
+      `/${params.site}/points/${pinCode}`;
+  };
+
+  return (
+    <main className="min-h-screen bg-gradient-to-b from-blue-600 to-white p-4">
+
+      <div className="max-w-3xl mx-auto space-y-6">
+
+        <div className="bg-white rounded-3xl shadow-xl p-6">
+
+          <h1 className="text-3xl font-bold mb-2">
+
+            Таблица баллов
+
+          </h1>
+
+          <p className="text-gray-500">
+
+            Площадка:
+            {" "}
+            {params.site === "argo"
+              ? "Арго"
+              : "Буковая"}
+
+          </p>
+
+        </div>
+
+        <div className="bg-white rounded-3xl shadow-xl p-6 space-y-4">
+
+          {leaderboard.map((item) => {
+
+            const employee =
+              employees.find(
+                (emp) =>
+                  emp.id ===
+                  item.employee_id
+              );
+
+            return (
+
+              <div
+                key={item.employee_id}
+                className="flex items-center justify-between border-b pb-3"
+              >
+
+                <span className="font-medium">
+
+                  {employee?.full_name}
+
+                </span>
+
+                <span className="font-bold text-blue-600">
+
+                  {item.total}
+
+                </span>
+
+              </div>
+            );
+          })}
+
+        </div>
+
+        <div className="bg-white rounded-3xl shadow-xl p-6 space-y-4">
+
+          <h2 className="text-xl font-semibold">
+
+            Личный кабинет
+
+          </h2>
+
+          <input
+            type="password"
+            placeholder="Введите PIN"
+            value={pinCode}
+            onChange={(e) =>
+              setPinCode(
+                e.target.value
+              )
+            }
+            className="w-full h-12 rounded-xl border px-4"
+          />
+
+          <button
+            onClick={
+              handleOpenCabinet
+            }
+            className="w-full h-12 rounded-xl bg-blue-600 text-white font-medium"
+          >
+
+            Открыть кабинет
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </main>
+  );
+}
