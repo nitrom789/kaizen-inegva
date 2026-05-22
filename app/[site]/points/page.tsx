@@ -114,10 +114,11 @@ export default function PointsPage() {
   const handleOpenCabinet = () => {
 
     const employee =
-      employees.find(
-        (item) =>
-          item.pin_code === pinCode
-      );
+        employees.find(
+            (item) =>
+            String(item.pin_code).trim() ===
+            pinCode.trim()
+    );
 
     if (!employee) {
       alert("Неверный PIN");
