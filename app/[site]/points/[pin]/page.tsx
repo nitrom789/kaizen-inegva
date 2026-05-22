@@ -171,17 +171,7 @@ export default function EmployeePointsPage() {
 
         </div>
 
-        <button
-          onClick={() => {
-            window.location.href =
-              `/${site}/points`;
-          }}
-          className="w-full h-12 rounded-xl bg-gray-900 text-white font-medium"
-        >
-
-          Назад к таблице
-
-        </button>
+        
 
         <div className="bg-white rounded-3xl shadow-xl p-6 space-y-4">
 
