@@ -38,10 +38,7 @@ export default function PointsPage({
 
   const fetchLeaderboard = async () => {
 
-    const siteName =
-      params.site === "argo"
-        ? "Арго"
-        : "Буковая";
+    
 
     const { data: employeesData } =
   await supabase
