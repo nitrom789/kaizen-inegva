@@ -152,7 +152,39 @@ export default function PointsPage() {
 
         </div>
 
+
+
         <div className="bg-white rounded-3xl shadow-xl p-6 space-y-4">
+
+          <h2 className="text-xl font-semibold">
+            Личный кабинет
+          </h2>
+
+          <input
+            type="password"
+            placeholder="Введите PIN"
+            value={pinCode}
+            onChange={(e) =>
+              setPinCode(
+                e.target.value
+              )
+            }
+            className="w-full h-12 rounded-xl border px-4"
+          />
+
+          <button
+            onClick={
+              handleOpenCabinet
+            }
+            className="w-full h-12 rounded-xl bg-blue-600 text-white font-medium"
+          >
+
+            Открыть кабинет
+
+          </button>
+
+        </div>
+                <div className="bg-white rounded-3xl shadow-xl p-6 space-y-4">
 
           {leaderboard.map((item) => {
 
@@ -185,37 +217,6 @@ export default function PointsPage() {
               </div>
             );
           })}
-
-        </div>
-
-        <div className="bg-white rounded-3xl shadow-xl p-6 space-y-4">
-
-          <h2 className="text-xl font-semibold">
-            Личный кабинет
-          </h2>
-
-          <input
-            type="password"
-            placeholder="Введите PIN"
-            value={pinCode}
-            onChange={(e) =>
-              setPinCode(
-                e.target.value
-              )
-            }
-            className="w-full h-12 rounded-xl border px-4"
-          />
-
-          <button
-            onClick={
-              handleOpenCabinet
-            }
-            className="w-full h-12 rounded-xl bg-blue-600 text-white font-medium"
-          >
-
-            Открыть кабинет
-
-          </button>
 
         </div>
 
