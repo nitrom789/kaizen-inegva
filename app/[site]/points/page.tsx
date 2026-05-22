@@ -93,7 +93,7 @@ export default function PointsPage() {
         }
 
         totals[item.employee_id] +=
-          item.points;
+            Number(item.points);
       });
 
     const leaderboardData =
