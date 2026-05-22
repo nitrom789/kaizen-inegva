@@ -61,10 +61,10 @@ export default function PointsPage() {
     setEmployees(employeesData);
 
     const employeeIds =
-      employeesData.map(
-        (item) => item.id
-      );
-
+        employeesData.map(
+            (item) =>
+            item.id.toString()
+  );
     if (employeeIds.length === 0) {
       setLeaderboard([]);
       return;
