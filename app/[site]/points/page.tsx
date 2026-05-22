@@ -155,6 +155,8 @@ export default function PointsPage() {
         <div className="bg-white rounded-3xl shadow-xl p-6 space-y-4">
 
           {leaderboard.map((item) => {
+            console.log(item);
+            console.log(employees);
 
             const employee =
               employees.find(
