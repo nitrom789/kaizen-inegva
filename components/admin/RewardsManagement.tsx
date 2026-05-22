@@ -2,11 +2,17 @@
 
 import { useEffect, useState } from "react";
 
+import * as XLSX from "xlsx";
+
+import { saveAs } from "file-saver";
+
 import { supabase } from "@/lib/supabase";
 
 type Employee = {
   id: number;
   full_name: string;
+  pin_code: string;
+  site_id: number;
 };
 
 type RewardTotal = {
@@ -133,8 +139,109 @@ export function RewardsManagement() {
     fetchData();
   };
 
+  const exportPins = (
+    siteId: number,
+    siteName: string
+  ) => {
+
+    const filteredEmployees =
+      employees.filter(
+        (item) =>
+          item.site_id === siteId
+      );
+
+    const exportData =
+      filteredEmployees.map(
+        (item) => ({
+          "ФИО":
+            item.full_name,
+
+          "PIN-код":
+            item.pin_code,
+        })
+      );
+
+    const worksheet =
+      XLSX.utils.json_to_sheet(
+        exportData
+      );
+
+    const workbook =
+      XLSX.utils.book_new();
+
+    XLSX.utils.book_append_sheet(
+      workbook,
+      worksheet,
+      "PIN-коды"
+    );
+
+    const excelBuffer =
+      XLSX.write(
+        workbook,
+        {
+          bookType: "xlsx",
+          type: "array",
+        }
+      );
+
+    const blob = new Blob(
+      [excelBuffer],
+      {
+        type:
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
+      }
+    );
+
+    saveAs(
+      blob,
+      `pins-${siteName}.xlsx`
+    );
+  };
+
   return (
     <div className="space-y-6">
+
+      <div className="bg-white rounded-3xl shadow-xl p-6 space-y-4">
+
+        <h2 className="text-2xl font-bold">
+
+          Экспорт PIN-кодов
+
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+          <button
+            onClick={() =>
+              exportPins(
+                1,
+                "argo"
+              )
+            }
+            className="h-12 rounded-xl bg-blue-600 text-white font-medium"
+          >
+
+            Экспорт Арго
+
+          </button>
+
+          <button
+            onClick={() =>
+              exportPins(
+                2,
+                "bukovaya"
+              )
+            }
+            className="h-12 rounded-xl bg-green-600 text-white font-medium"
+          >
+
+            Экспорт Буковая
+
+          </button>
+
+        </div>
+
+      </div>
 
       <div className="bg-white rounded-3xl shadow-xl p-6 space-y-4">
 
