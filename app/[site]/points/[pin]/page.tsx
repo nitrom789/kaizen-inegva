@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { useParams } from "next/navigation";
-
+import { Header } from "@/components/layout/Header";
 import { supabase } from "@/lib/supabase";
 
 type Employee = {
@@ -102,7 +102,7 @@ export default function EmployeePointsPage() {
 
     return (
       <main className="min-h-screen bg-gradient-to-b from-blue-600 to-white flex items-center justify-center">
-
+        <Header />
         <p className="text-white text-lg">
           Загрузка...
         </p>
