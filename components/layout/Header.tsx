@@ -28,46 +28,54 @@ export function Header() {
     pathname.startsWith("/admin");
 
   const isArgo =
-  pathname.startsWith("/argo");
+    pathname.startsWith("/argo");
 
-const isBukovaya =
-  pathname.startsWith("/bukovaya");
+  const isBukovaya =
+    pathname.startsWith("/bukovaya");
 
-const basePath = isArgo
-  ? "/argo"
-  : isBukovaya
-  ? "/bukovaya"
-  : "";
+  const basePath = isArgo
+    ? "/argo"
+    : isBukovaya
+    ? "/bukovaya"
+    : "";
 
-const navItems = isAdminPage
-  ? [
-      {
-        label: "Главная",
-        href: "/",
-      },
-    ]
-  : [
-      {
-        label: "Главная",
-        href: basePath || "/",
-      },
-      {
-        label: "Новая",
-        href: `${basePath}/new`,
-      },
-      {
-        label: "В работе",
-        href: `${basePath}/in-progress`,
-      },
-      {
-        label: "Внедрено",
-        href: `${basePath}/implemented`,
-      },
-      {
-        label: "Отклонено",
-        href: `${basePath}/rejected`,
-      },
-    ];
+  const navItems = isAdminPage
+    ? [
+        {
+          label: "Главная",
+          href: "/",
+        },
+      ]
+    : [
+        {
+          label: "Главная",
+          href: basePath || "/",
+        },
+        {
+          label: "Новая",
+          href: `${basePath}/new`,
+        },
+        {
+          label: "В работе",
+          href: `${basePath}/in-progress`,
+        },
+        {
+          label: "Внедрено",
+          href: `${basePath}/implemented`,
+        },
+        {
+          label: "Отклонено",
+          href: `${basePath}/rejected`,
+        },
+        {
+          label: "Таблица баллов",
+          href: `${basePath}/points`,
+        },
+      ];
+
+  useEffect(() => {
+    checkUser();
+  }, []);
 
   const checkUser = async () => {
 
@@ -93,23 +101,24 @@ const navItems = isAdminPage
       <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl px-6 py-4">
 
         <div className="flex items-center justify-between gap-4">
+
           {isAdminPage && (
 
-  <button
-    onClick={() => {
+            <button
+              onClick={() => {
 
-      const event = new CustomEvent(
-        "open-admin-mobile-menu"
-      );
+                const event = new CustomEvent(
+                  "open-admin-mobile-menu"
+                );
 
-      window.dispatchEvent(event);
-    }}
-    className="lg:hidden text-white border border-white/30 px-4 py-2 rounded-xl text-sm"
-  >
-    Меню
-  </button>
+                window.dispatchEvent(event);
+              }}
+              className="lg:hidden text-white border border-white/30 px-4 py-2 rounded-xl text-sm"
+            >
+              Меню
+            </button>
 
-)}
+          )}
 
           <div className="hidden md:flex items-center gap-2">
 
@@ -148,18 +157,20 @@ const navItems = isAdminPage
 
           {!isAdminPage && (
 
-          <div className="md:hidden">
+            <div className="md:hidden">
 
-            <button
-              onClick={() =>
-                setMobileMenuOpen(!mobileMenuOpen)
-              }
-              className="text-white border border-white/30 px-4 py-2 rounded-xl text-sm"
-            >
-              Меню
-            </button>
+              <button
+                onClick={() =>
+                  setMobileMenuOpen(!mobileMenuOpen)
+                }
+                className="text-white border border-white/30 px-4 py-2 rounded-xl text-sm"
+              >
+                Меню
+              </button>
 
-          </div>)}
+            </div>
+
+          )}
 
           {!userEmail ? (
 
