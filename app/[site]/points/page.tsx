@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 
 import { supabase } from "@/lib/supabase";
 
@@ -15,16 +16,17 @@ type LeaderboardItem = {
   total: number;
 };
 
-export default async function PointsPage({
-  params,
-}: {
-  params: Promise<{
-    site: string;
-  }>;
-}) {
+type RewardTransaction = {
+  employee_id: number;
+  points: number;
+};
 
-  const { site } = await params;
-    console.log(site);
+export default function PointsPage() {
+
+  const params = useParams();
+
+  const site =
+    params.site as string;
 
   const [employees, setEmployees] =
     useState<Employee[]>([]);
@@ -41,18 +43,16 @@ export default async function PointsPage({
 
   const fetchLeaderboard = async () => {
 
-    
-
     const { data: employeesData } =
-  await supabase
-    .from("employees")
-    .select("*")
-    .eq(
-      "site_id",
-      site === "argo"
-        ? 1
-        : 2
-    );
+      await supabase
+        .from("employees")
+        .select("*")
+        .eq(
+          "site_id",
+          site === "argo"
+            ? 1
+            : 2
+        );
 
     if (!employeesData) {
       return;
@@ -64,6 +64,11 @@ export default async function PointsPage({
       employeesData.map(
         (item) => item.id
       );
+
+    if (employeeIds.length === 0) {
+      setLeaderboard([]);
+      return;
+    }
 
     const {
       data: rewardsData,
@@ -80,15 +85,16 @@ export default async function PointsPage({
       number
     > = {};
 
-    rewardsData?.forEach((item) => {
+    (rewardsData as RewardTransaction[] | null)
+      ?.forEach((item) => {
 
-      if (!totals[item.employee_id]) {
-        totals[item.employee_id] = 0;
-      }
+        if (!totals[item.employee_id]) {
+          totals[item.employee_id] = 0;
+        }
 
-      totals[item.employee_id] +=
-        item.points;
-    });
+        totals[item.employee_id] +=
+          item.points;
+      });
 
     const leaderboardData =
       employeeIds.map((id) => ({
@@ -119,7 +125,7 @@ export default async function PointsPage({
     }
 
     window.location.href =
-  `/${site}/points/${pinCode}`;
+      `/${site}/points/${pinCode}`;
   };
 
   return (
@@ -130,15 +136,14 @@ export default async function PointsPage({
         <div className="bg-white rounded-3xl shadow-xl p-6">
 
           <h1 className="text-3xl font-bold mb-2">
-
             Таблица баллов
-
           </h1>
 
           <p className="text-gray-500">
 
             Площадка:
             {" "}
+
             {site === "argo"
               ? "Арго"
               : "Буковая"}
@@ -186,9 +191,7 @@ export default async function PointsPage({
         <div className="bg-white rounded-3xl shadow-xl p-6 space-y-4">
 
           <h2 className="text-xl font-semibold">
-
             Личный кабинет
-
           </h2>
 
           <input
