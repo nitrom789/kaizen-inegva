@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { EmployeeAvatar } from "@/components/ui/EmployeeAvatar";
 
 type ImprovementCardProps = {
   title: string;
@@ -19,74 +19,75 @@ export function ImprovementCard({
 }: ImprovementCardProps) {
 
   return (
-    <div className="bg-white rounded-2xl p-5 shadow-lg border border-gray-100 space-y-4">
+    <div className="bg-white rounded-3xl p-5 shadow-xl border border-gray-100">
 
-      <div className="flex items-start justify-between gap-2">
+      <div className="flex gap-4">
 
-        <div className="flex items-center gap-3">
+        <EmployeeAvatar
+          photoUrl={photoUrl}
+          fullName={employee}
+          width={72}
+          height={96}
+        />
 
-          <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200">
+        <div className="flex-1 space-y-3">
 
-            {photoUrl ? (
+          <div className="flex items-start justify-between gap-3">
 
-              <Image
-                src={photoUrl}
-                alt={employee}
-                width={48}
-                height={48}
-                className="w-full h-full object-cover"
-              />
+            <div>
 
-            ) : (
+              <h3 className="font-bold text-gray-900 text-lg leading-tight">
 
-              <div className="w-full h-full flex items-center justify-center text-sm font-semibold text-gray-600">
+                {title}
 
-                {employee?.[0]}
+              </h3>
 
-              </div>
+              <p className="text-sm text-gray-500 mt-1">
 
-            )}
+                {employee}
 
-          </div>
+              </p>
 
-          <div>
+            </div>
 
-            <h3 className="font-semibold text-gray-900">
-              {title}
-            </h3>
+            <span className="bg-blue-100 text-blue-700 text-xs px-3 py-1 rounded-full whitespace-nowrap h-fit">
 
-            <p className="text-sm text-gray-500">
-              {employee}
-            </p>
+              {category}
+
+            </span>
 
           </div>
+
+          <p className="text-sm text-gray-700 leading-relaxed">
+
+            {description}
+
+          </p>
 
         </div>
 
-        <span className="bg-blue-100 text-blue-700 text-xs px-3 py-1 rounded-full whitespace-nowrap">
-          {category}
-        </span>
-
       </div>
 
-      <p className="text-sm text-gray-700 leading-relaxed">
-        {description}
-      </p>
-{rejectReason && (
+      {rejectReason && (
 
-  <div className="bg-red-50 border border-red-100 rounded-xl p-3">
+        <div className="mt-4 bg-red-50 border border-red-100 rounded-2xl p-4">
 
-    <p className="text-sm font-medium text-red-700">
-      Причина отклонения
-    </p>
+          <p className="text-sm font-semibold text-red-700">
 
-    <p className="text-sm text-red-600 mt-1">
-      {rejectReason}
-    </p>
+            Причина отклонения
 
-  </div>
+          </p>
 
-)}
+          <p className="text-sm text-red-600 mt-1 leading-relaxed">
+
+            {rejectReason}
+
+          </p>
+
+        </div>
+
+      )}
+
     </div>
   );
 }
