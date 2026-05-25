@@ -39,43 +39,44 @@ export function Header() {
     ? "/bukovaya"
     : "";
 
-  const navItems = isAdminPage
-    ? [
-        {
-          label: "Главная",
-          href: "/",
-        },
-      ]
-    : [
-        {
-          label: "Главная",
-          href: basePath || "/",
-        },
-        {
-          label: "Новая",
-          href: `${basePath}/new`,
-        },
-        {
-          label: "В работе",
-          href: `${basePath}/in-progress`,
-        },
-        {
-          label: "Внедрено",
-          href: `${basePath}/implemented`,
-        },
-        {
-          label: "Отклонено",
-          href: `${basePath}/rejected`,
-        },
-        {
-          label: "Таблица баллов",
-          href: `${basePath}/points`,
-        },
-      ];
+const isHomePage =
+  pathname === "/";
 
-  useEffect(() => {
-    checkUser();
-  }, []);
+const navItems = isHomePage
+  ? []
+  : isAdminPage
+  ? [
+      {
+        label: "Главная",
+        href: "/",
+      },
+    ]
+  : [
+      {
+        label: "Главная",
+        href: basePath || "/",
+      },
+      {
+        label: "Новая",
+        href: `${basePath}/new`,
+      },
+      {
+        label: "В работе",
+        href: `${basePath}/in-progress`,
+      },
+      {
+        label: "Внедрено",
+        href: `${basePath}/implemented`,
+      },
+      {
+        label: "Отклонено",
+        href: `${basePath}/rejected`,
+      },
+      {
+        label: "Таблица баллов",
+        href: `${basePath}/points`,
+      },
+    ];
 
   const checkUser = async () => {
 
