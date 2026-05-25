@@ -1,3 +1,5 @@
+export const dynamic =
+  "force-dynamic";
 import { Header } from "@/components/layout/Header";
 import { ImprovementCard } from "@/components/cards/ImprovementCard";
 import { supabase } from "@/lib/supabase";
