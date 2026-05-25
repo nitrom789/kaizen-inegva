@@ -44,6 +44,7 @@ export default async function ArgoInProgressPage() {
               category={item.category}
               employee={item.employees?.full_name}
               description={item.description}
+              rejectReason={item.reject_reason}
             />
 
           ))}
