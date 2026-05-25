@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import * as XLSX from "xlsx";
 
 import { saveAs } from "file-saver";
 
 import { Button } from "@/components/ui/button";
+
+import { EmployeeAvatar } from "@/components/ui/EmployeeAvatar";
 
 import { supabase } from "@/lib/supabase";
 
@@ -17,6 +19,7 @@ type Employee = {
   full_name: string;
   pin_code: string;
   site_id: number;
+  photo_url?: string;
 };
 
 export function EmployeeForm() {
@@ -25,13 +28,39 @@ export function EmployeeForm() {
     useState("");
 
   const [photoFile, setPhotoFile] =
-  useState<File | null>(null);
+    useState<File | null>(null);
 
   const [siteId, setSiteId] =
     useState("1");
 
   const [loading, setLoading] =
     useState(false);
+
+  const [employees, setEmployees] =
+    useState<Employee[]>([]);
+
+  useEffect(() => {
+    fetchEmployees();
+  }, []);
+
+  const fetchEmployees =
+    async () => {
+
+      const {
+        data,
+      } = await supabase
+        .from("employees")
+        .select("*")
+        .order(
+          "full_name"
+        );
+
+      if (!data) {
+        return;
+      }
+
+      setEmployees(data);
+    };
 
   const generateUniquePin =
     async () => {
@@ -134,6 +163,42 @@ export function EmployeeForm() {
     );
   };
 
+  const handleDelete =
+    async (id: number) => {
+
+      const confirmed =
+        confirm(
+          "Удалить сотрудника?"
+        );
+
+      if (!confirmed) {
+        return;
+      }
+
+      const { error } =
+        await supabase
+          .from("employees")
+          .delete()
+          .eq("id", id);
+
+      if (error) {
+
+        console.error(error);
+
+        toast.error(
+          "Ошибка удаления"
+        );
+
+        return;
+      }
+
+      toast.success(
+        "Сотрудник удален"
+      );
+
+      fetchEmployees();
+    };
+
   const handleSubmit = async () => {
 
     if (!fullName.trim()) {
@@ -149,51 +214,52 @@ export function EmployeeForm() {
 
     const pinCode =
       await generateUniquePin();
-      let uploadedPhotoUrl = "";
 
-if (photoFile) {
+    let uploadedPhotoUrl = "";
 
-  const fileExt =
-    photoFile.name
-      .split(".")
-      .pop();
+    if (photoFile) {
 
-  const fileName =
-    `${Date.now()}.${fileExt}`;
+      const fileExt =
+        photoFile.name
+          .split(".")
+          .pop();
 
-  const {
-    error: uploadError,
-  } = await supabase
-    .storage
-    .from("employee-photos")
-    .upload(
-      fileName,
-      photoFile
-    );
+      const fileName =
+        `${Date.now()}.${fileExt}`;
 
-  if (uploadError) {
+      const {
+        error: uploadError,
+      } = await supabase
+        .storage
+        .from("employee-photos")
+        .upload(
+          fileName,
+          photoFile
+        );
 
-    console.error(uploadError);
+      if (uploadError) {
 
-    toast.error(
-      "Ошибка загрузки фото"
-    );
+        console.error(uploadError);
 
-    setLoading(false);
+        toast.error(
+          "Ошибка загрузки фото"
+        );
 
-    return;
-  }
+        setLoading(false);
 
-  const {
-    data: publicUrlData,
-  } = supabase
-    .storage
-    .from("employee-photos")
-    .getPublicUrl(fileName);
+        return;
+      }
 
-  uploadedPhotoUrl =
-    publicUrlData.publicUrl;
-}
+      const {
+        data: publicUrlData,
+      } = supabase
+        .storage
+        .from("employee-photos")
+        .getPublicUrl(fileName);
+
+      uploadedPhotoUrl =
+        publicUrlData.publicUrl;
+    }
 
     const { error } =
       await supabase
@@ -234,6 +300,8 @@ if (photoFile) {
     setFullName("");
     setPhotoFile(null);
     setSiteId("1");
+
+    fetchEmployees();
   };
 
   return (
@@ -298,32 +366,32 @@ if (photoFile) {
 
         </div>
 
-            <div className="space-y-2">
+        <div className="space-y-2">
 
-  <label className="text-sm font-medium">
+          <label className="text-sm font-medium">
 
-    Фото сотрудника
+            Фото сотрудника
 
-  </label>
+          </label>
 
-  <input
-    type="file"
-    accept="image/*"
-    onChange={(e) => {
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
 
-      const file =
-        e.target.files?.[0];
+              const file =
+                e.target.files?.[0];
 
-      if (!file) {
-        return;
-      }
+              if (!file) {
+                return;
+              }
 
-      setPhotoFile(file);
-    }}
-    className="w-full h-12 rounded-xl border px-4 py-2"
-  />
+              setPhotoFile(file);
+            }}
+            className="w-full h-12 rounded-xl border px-4 py-2"
+          />
 
-</div>
+        </div>
 
         <Button
           onClick={handleSubmit}
@@ -376,6 +444,89 @@ if (photoFile) {
             Экспорт Буковая
 
           </button>
+
+        </div>
+
+      </div>
+
+      <div className="bg-white rounded-2xl p-5 shadow-xl space-y-5">
+
+        <h2 className="text-xl font-semibold">
+
+          Список сотрудников
+
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+          {employees.map((item) => (
+
+            <div
+              key={item.id}
+              className="border rounded-2xl p-4 flex gap-4 items-start"
+            >
+
+              <EmployeeAvatar
+                photoUrl={item.photo_url}
+                fullName={item.full_name}
+                width={72}
+                height={96}
+              />
+
+              <div className="flex-1 space-y-2">
+
+                <div>
+
+                  <h3 className="font-semibold text-lg">
+
+                    {item.full_name}
+
+                  </h3>
+
+                  <p className="text-sm text-gray-500">
+
+                    {item.site_id === 1
+                      ? "Арго"
+                      : "Буковая"}
+
+                  </p>
+
+                </div>
+
+                <div className="bg-gray-100 rounded-xl px-3 py-2 inline-block">
+
+                  <p className="text-sm text-gray-500">
+
+                    PIN-код
+
+                  </p>
+
+                  <p className="font-bold text-lg">
+
+                    {item.pin_code}
+
+                  </p>
+
+                </div>
+
+                <button
+                  onClick={() =>
+                    handleDelete(
+                      item.id
+                    )
+                  }
+                  className="h-10 px-4 rounded-xl bg-red-600 text-white text-sm font-medium"
+                >
+
+                  Удалить
+
+                </button>
+
+              </div>
+
+            </div>
+
+          ))}
 
         </div>
 
