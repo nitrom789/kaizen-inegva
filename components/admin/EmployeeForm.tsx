@@ -39,6 +39,12 @@ export function EmployeeForm() {
   const [employees, setEmployees] =
     useState<Employee[]>([]);
 
+  const [search, setSearch] =
+    useState("");
+
+  const [filterSite, setFilterSite] =
+    useState("all");
+
   useEffect(() => {
     fetchEmployees();
   }, []);
@@ -304,6 +310,28 @@ export function EmployeeForm() {
     fetchEmployees();
   };
 
+  const filteredEmployees =
+    employees.filter((item) => {
+
+      const matchesSearch =
+        item.full_name
+          .toLowerCase()
+          .includes(
+            search.toLowerCase()
+          );
+
+      const matchesSite =
+        filterSite === "all"
+          ? true
+          : String(item.site_id) ===
+            filterSite;
+
+      return (
+        matchesSearch &&
+        matchesSite
+      );
+    });
+
   return (
     <div className="space-y-6">
 
@@ -451,15 +479,59 @@ export function EmployeeForm() {
 
       <div className="bg-white rounded-2xl p-5 shadow-xl space-y-5">
 
-        <h2 className="text-xl font-semibold">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 
-          Список сотрудников
+          <h2 className="text-xl font-semibold">
 
-        </h2>
+            Список сотрудников
+
+          </h2>
+
+          <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto">
+
+            <input
+              type="text"
+              placeholder="Поиск сотрудника..."
+              value={search}
+              onChange={(e) =>
+                setSearch(
+                  e.target.value
+                )
+              }
+              className="h-12 rounded-xl border px-4 min-w-[260px]"
+            />
+
+            <select
+              value={filterSite}
+              onChange={(e) =>
+                setFilterSite(
+                  e.target.value
+                )
+              }
+              className="h-12 rounded-xl border px-4"
+            >
+
+              <option value="all">
+                Все площадки
+              </option>
+
+              <option value="1">
+                Арго
+              </option>
+
+              <option value="2">
+                Буковая
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-          {employees.map((item) => (
+          {filteredEmployees.map((item) => (
 
             <div
               key={item.id}
@@ -473,17 +545,17 @@ export function EmployeeForm() {
                 height={96}
               />
 
-              <div className="flex-1 space-y-2">
+              <div className="flex-1 space-y-3">
 
                 <div>
 
-                  <h3 className="font-semibold text-lg">
+                  <h3 className="font-semibold text-lg leading-tight">
 
                     {item.full_name}
 
                   </h3>
 
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-500 mt-1">
 
                     {item.site_id === 1
                       ? "Арго"
