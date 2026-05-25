@@ -24,8 +24,8 @@ export function EmployeeForm() {
   const [fullName, setFullName] =
     useState("");
 
-  const [photoUrl, setPhotoUrl] =
-    useState("");
+  const [photoFile, setPhotoFile] =
+  useState<File | null>(null);
 
   const [siteId, setSiteId] =
     useState("1");
@@ -149,6 +149,51 @@ export function EmployeeForm() {
 
     const pinCode =
       await generateUniquePin();
+      let uploadedPhotoUrl = "";
+
+if (photoFile) {
+
+  const fileExt =
+    photoFile.name
+      .split(".")
+      .pop();
+
+  const fileName =
+    `${Date.now()}.${fileExt}`;
+
+  const {
+    error: uploadError,
+  } = await supabase
+    .storage
+    .from("employee-photos")
+    .upload(
+      fileName,
+      photoFile
+    );
+
+  if (uploadError) {
+
+    console.error(uploadError);
+
+    toast.error(
+      "Ошибка загрузки фото"
+    );
+
+    setLoading(false);
+
+    return;
+  }
+
+  const {
+    data: publicUrlData,
+  } = supabase
+    .storage
+    .from("employee-photos")
+    .getPublicUrl(fileName);
+
+  uploadedPhotoUrl =
+    publicUrlData.publicUrl;
+}
 
     const { error } =
       await supabase
@@ -159,7 +204,7 @@ export function EmployeeForm() {
               fullName.trim(),
 
             photo_url:
-              photoUrl.trim(),
+              uploadedPhotoUrl,
 
             site_id:
               Number(siteId),
@@ -187,7 +232,7 @@ export function EmployeeForm() {
     );
 
     setFullName("");
-    setPhotoUrl("");
+    setPhotoFile(null);
     setSiteId("1");
   };
 
@@ -253,26 +298,32 @@ export function EmployeeForm() {
 
         </div>
 
-        <div className="space-y-2">
+            <div className="space-y-2">
 
-          <label className="text-sm font-medium">
+  <label className="text-sm font-medium">
 
-            Фото URL
+    Фото сотрудника
 
-          </label>
+  </label>
 
-          <input
-            value={photoUrl}
-            onChange={(e) =>
-              setPhotoUrl(
-                e.target.value
-              )
-            }
-            placeholder="https://..."
-            className="w-full h-12 rounded-xl border px-4"
-          />
+  <input
+    type="file"
+    accept="image/*"
+    onChange={(e) => {
 
-        </div>
+      const file =
+        e.target.files?.[0];
+
+      if (!file) {
+        return;
+      }
+
+      setPhotoFile(file);
+    }}
+    className="w-full h-12 rounded-xl border px-4 py-2"
+  />
+
+</div>
 
         <Button
           onClick={handleSubmit}
