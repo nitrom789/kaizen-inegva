@@ -333,9 +333,9 @@ export function EmployeeForm() {
     });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-6xl">
 
-      <div className="bg-white rounded-2xl p-5 shadow-xl space-y-4">
+      <div className="bg-white rounded-2xl p-5 shadow-xl space-y-5">
 
         <h2 className="text-xl font-semibold">
 
@@ -343,54 +343,58 @@ export function EmployeeForm() {
 
         </h2>
 
-        <div className="space-y-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-          <label className="text-sm font-medium">
+          <div className="space-y-2">
 
-            ФИО
+            <label className="text-sm font-medium">
 
-          </label>
+              ФИО
 
-          <input
-            value={fullName}
-            onChange={(e) =>
-              setFullName(
-                e.target.value
-              )
-            }
-            placeholder="Введите ФИО"
-            className="w-full h-12 rounded-xl border px-4"
-          />
+            </label>
 
-        </div>
+            <input
+              value={fullName}
+              onChange={(e) =>
+                setFullName(
+                  e.target.value
+                )
+              }
+              placeholder="Введите ФИО"
+              className="w-full h-11 rounded-xl border px-4"
+            />
 
-        <div className="space-y-2">
+          </div>
 
-          <label className="text-sm font-medium">
+          <div className="space-y-2">
 
-            Площадка
+            <label className="text-sm font-medium">
 
-          </label>
+              Площадка
 
-          <select
-            value={siteId}
-            onChange={(e) =>
-              setSiteId(
-                e.target.value
-              )
-            }
-            className="w-full h-12 rounded-xl border px-4"
-          >
+            </label>
 
-            <option value="1">
-              Арго
-            </option>
+            <select
+              value={siteId}
+              onChange={(e) =>
+                setSiteId(
+                  e.target.value
+                )
+              }
+              className="w-full h-11 rounded-xl border px-4"
+            >
 
-            <option value="2">
-              Буковая
-            </option>
+              <option value="1">
+                Арго
+              </option>
 
-          </select>
+              <option value="2">
+                Буковая
+              </option>
+
+            </select>
+
+          </div>
 
         </div>
 
@@ -416,7 +420,7 @@ export function EmployeeForm() {
 
               setPhotoFile(file);
             }}
-            className="w-full h-12 rounded-xl border px-4 py-2"
+            className="w-full h-11 rounded-xl border px-4 py-2"
           />
 
         </div>
@@ -424,7 +428,7 @@ export function EmployeeForm() {
         <Button
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full"
+          className="w-full h-11"
         >
 
           {loading
@@ -435,7 +439,7 @@ export function EmployeeForm() {
 
       </div>
 
-      <div className="bg-white rounded-2xl p-5 shadow-xl space-y-4">
+      <div className="bg-white rounded-2xl p-5 shadow-xl space-y-4 max-w-4xl">
 
         <h2 className="text-xl font-semibold">
 
@@ -443,7 +447,7 @@ export function EmployeeForm() {
 
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="flex flex-wrap gap-4">
 
           <button
             onClick={() =>
@@ -452,7 +456,7 @@ export function EmployeeForm() {
                 "argo"
               )
             }
-            className="h-12 rounded-xl bg-blue-600 text-white font-medium"
+            className="h-11 px-6 rounded-xl bg-blue-600 text-white font-medium"
           >
 
             Экспорт Арго
@@ -466,7 +470,7 @@ export function EmployeeForm() {
                 "bukovaya"
               )
             }
-            className="h-12 rounded-xl bg-green-600 text-white font-medium"
+            className="h-11 px-6 rounded-xl bg-green-600 text-white font-medium"
           >
 
             Экспорт Буковая
@@ -479,7 +483,7 @@ export function EmployeeForm() {
 
       <div className="bg-white rounded-2xl p-5 shadow-xl space-y-5">
 
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4">
 
           <h2 className="text-xl font-semibold">
 
@@ -487,7 +491,7 @@ export function EmployeeForm() {
 
           </h2>
 
-          <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto">
+          <div className="flex flex-col md:flex-row gap-3">
 
             <input
               type="text"
@@ -498,7 +502,7 @@ export function EmployeeForm() {
                   e.target.value
                 )
               }
-              className="h-12 rounded-xl border px-4 min-w-[260px]"
+              className="h-11 rounded-xl border px-4 w-[260px]"
             />
 
             <select
@@ -508,7 +512,7 @@ export function EmployeeForm() {
                   e.target.value
                 )
               }
-              className="h-12 rounded-xl border px-4"
+              className="h-11 rounded-xl border px-4"
             >
 
               <option value="all">
@@ -529,7 +533,7 @@ export function EmployeeForm() {
 
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
 
           {filteredEmployees.map((item) => (
 
@@ -545,11 +549,11 @@ export function EmployeeForm() {
                 height={96}
               />
 
-              <div className="flex-1 space-y-3">
+              <div className="flex-1 space-y-3 min-w-0">
 
                 <div>
 
-                  <h3 className="font-semibold text-lg leading-tight">
+                  <h3 className="font-semibold text-base leading-tight break-words">
 
                     {item.full_name}
 
@@ -567,7 +571,7 @@ export function EmployeeForm() {
 
                 <div className="bg-gray-100 rounded-xl px-3 py-2 inline-block">
 
-                  <p className="text-sm text-gray-500">
+                  <p className="text-xs text-gray-500">
 
                     PIN-код
 
@@ -587,7 +591,7 @@ export function EmployeeForm() {
                       item.id
                     )
                   }
-                  className="h-10 px-4 rounded-xl bg-red-600 text-white text-sm font-medium"
+                  className="h-9 px-4 rounded-xl bg-red-600 text-white text-sm font-medium"
                 >
 
                   Удалить
