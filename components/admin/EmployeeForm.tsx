@@ -335,147 +335,151 @@ export function EmployeeForm() {
   return (
     <div className="space-y-6 max-w-6xl">
 
-      <div className="bg-white rounded-2xl p-5 shadow-xl space-y-5">
+      <div className="grid grid-cols-1 xl:grid-cols-[2fr_1fr] gap-6 items-start">
 
-        <h2 className="text-xl font-semibold">
+        <div className="bg-white rounded-2xl p-5 shadow-xl space-y-5">
 
-          Добавить сотрудника
+          <h2 className="text-xl font-semibold">
 
-        </h2>
+            Добавить сотрудника
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+            <div className="space-y-2">
+
+              <label className="text-sm font-medium">
+
+                ФИО
+
+              </label>
+
+              <input
+                value={fullName}
+                onChange={(e) =>
+                  setFullName(
+                    e.target.value
+                  )
+                }
+                placeholder="Введите ФИО"
+                className="w-full h-11 rounded-xl border px-4"
+              />
+
+            </div>
+
+            <div className="space-y-2">
+
+              <label className="text-sm font-medium">
+
+                Площадка
+
+              </label>
+
+              <select
+                value={siteId}
+                onChange={(e) =>
+                  setSiteId(
+                    e.target.value
+                  )
+                }
+                className="w-full h-11 rounded-xl border px-4"
+              >
+
+                <option value="1">
+                  Арго
+                </option>
+
+                <option value="2">
+                  Буковая
+                </option>
+
+              </select>
+
+            </div>
+
+          </div>
 
           <div className="space-y-2">
 
             <label className="text-sm font-medium">
 
-              ФИО
+              Фото сотрудника
 
             </label>
 
             <input
-              value={fullName}
-              onChange={(e) =>
-                setFullName(
-                  e.target.value
-                )
-              }
-              placeholder="Введите ФИО"
-              className="w-full h-11 rounded-xl border px-4"
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+
+                const file =
+                  e.target.files?.[0];
+
+                if (!file) {
+                  return;
+                }
+
+                setPhotoFile(file);
+              }}
+              className="w-full h-11 rounded-xl border px-4 py-2"
             />
 
           </div>
 
-          <div className="space-y-2">
+          <Button
+            onClick={handleSubmit}
+            disabled={loading}
+            className="w-full h-11"
+          >
 
-            <label className="text-sm font-medium">
+            {loading
+              ? "Добавление..."
+              : "Добавить сотрудника"}
 
-              Площадка
+          </Button>
 
-            </label>
+        </div>
 
-            <select
-              value={siteId}
-              onChange={(e) =>
-                setSiteId(
-                  e.target.value
+        <div className="bg-white rounded-2xl p-5 shadow-xl space-y-4">
+
+          <h2 className="text-xl font-semibold">
+
+            Экспорт PIN-кодов
+
+          </h2>
+
+          <div className="flex flex-col gap-3">
+
+            <button
+              onClick={() =>
+                exportPins(
+                  1,
+                  "argo"
                 )
               }
-              className="w-full h-11 rounded-xl border px-4"
+              className="h-11 px-6 rounded-xl bg-blue-600 text-white font-medium"
             >
 
-              <option value="1">
-                Арго
-              </option>
+              Экспорт Арго
 
-              <option value="2">
-                Буковая
-              </option>
+            </button>
 
-            </select>
+            <button
+              onClick={() =>
+                exportPins(
+                  2,
+                  "bukovaya"
+                )
+              }
+              className="h-11 px-6 rounded-xl bg-green-600 text-white font-medium"
+            >
+
+              Экспорт Буковая
+
+            </button>
 
           </div>
-
-        </div>
-
-        <div className="space-y-2">
-
-          <label className="text-sm font-medium">
-
-            Фото сотрудника
-
-          </label>
-
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => {
-
-              const file =
-                e.target.files?.[0];
-
-              if (!file) {
-                return;
-              }
-
-              setPhotoFile(file);
-            }}
-            className="w-full h-11 rounded-xl border px-4 py-2"
-          />
-
-        </div>
-
-        <Button
-          onClick={handleSubmit}
-          disabled={loading}
-          className="w-full h-11"
-        >
-
-          {loading
-            ? "Добавление..."
-            : "Добавить сотрудника"}
-
-        </Button>
-
-      </div>
-
-      <div className="bg-white rounded-2xl p-5 shadow-xl space-y-4 max-w-4xl">
-
-        <h2 className="text-xl font-semibold">
-
-          Экспорт PIN-кодов
-
-        </h2>
-
-        <div className="flex flex-wrap gap-4">
-
-          <button
-            onClick={() =>
-              exportPins(
-                1,
-                "argo"
-              )
-            }
-            className="h-11 px-6 rounded-xl bg-blue-600 text-white font-medium"
-          >
-
-            Экспорт Арго
-
-          </button>
-
-          <button
-            onClick={() =>
-              exportPins(
-                2,
-                "bukovaya"
-              )
-            }
-            className="h-11 px-6 rounded-xl bg-green-600 text-white font-medium"
-          >
-
-            Экспорт Буковая
-
-          </button>
 
         </div>
 
