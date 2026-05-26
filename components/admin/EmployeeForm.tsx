@@ -335,7 +335,7 @@ export function EmployeeForm() {
   return (
     <div className="space-y-6 max-w-6xl">
 
-      <div className="grid grid-cols-1 xl:grid-cols-[2fr_1fr] gap-6 items-start">
+      <div className="grid grid-cols-1 xl:grid-cols-[2fr_1fr] gap-6">
 
         <div className="bg-white rounded-2xl p-5 shadow-xl space-y-5">
 
@@ -441,7 +441,7 @@ export function EmployeeForm() {
 
         </div>
 
-        <div className="bg-white rounded-2xl p-5 shadow-xl space-y-4">
+        <div className="bg-white rounded-2xl p-5 shadow-xl space-y-4 flex flex-col justify-between h-full">
 
           <h2 className="text-xl font-semibold">
 
