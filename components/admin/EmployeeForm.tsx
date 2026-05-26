@@ -537,51 +537,49 @@ export function EmployeeForm() {
 
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+        {/* MOBILE */}
+
+        <div className="grid grid-cols-1 gap-3 md:hidden">
 
           {filteredEmployees.map((item) => (
 
             <div
               key={item.id}
-              className="border rounded-2xl p-4 flex gap-4 items-start"
+              className="border rounded-2xl p-4 bg-white flex gap-4"
             >
 
               <EmployeeAvatar
                 photoUrl={item.photo_url}
                 fullName={item.full_name}
-                width={72}
-                height={96}
+                width={56}
+                height={72}
               />
 
-              <div className="flex-1 space-y-3 min-w-0">
+              <div className="flex-1 min-w-0">
 
-                <div>
+                <h3 className="font-semibold text-sm leading-tight">
 
-                  <h3 className="font-semibold text-base leading-tight break-words">
+                  {item.full_name}
 
-                    {item.full_name}
+                </h3>
 
-                  </h3>
+                <p className="text-xs text-gray-500 mt-1">
 
-                  <p className="text-sm text-gray-500 mt-1">
+                  {item.site_id === 1
+                    ? "Арго"
+                    : "Буковая"}
 
-                    {item.site_id === 1
-                      ? "Арго"
-                      : "Буковая"}
+                </p>
 
-                  </p>
+                <div className="mt-3 inline-block bg-gray-100 rounded-lg px-2 py-1">
 
-                </div>
-
-                <div className="bg-gray-100 rounded-xl px-3 py-2 inline-block">
-
-                  <p className="text-xs text-gray-500">
+                  <p className="text-[10px] text-gray-500">
 
                     PIN-код
 
                   </p>
 
-                  <p className="font-bold text-lg">
+                  <p className="font-bold">
 
                     {item.pin_code}
 
@@ -591,11 +589,9 @@ export function EmployeeForm() {
 
                 <button
                   onClick={() =>
-                    handleDelete(
-                      item.id
-                    )
+                    handleDelete(item.id)
                   }
-                  className="h-9 px-4 rounded-xl bg-red-600 text-white text-sm font-medium"
+                  className="mt-3 h-8 px-3 rounded-lg bg-red-600 text-white text-xs font-medium"
                 >
 
                   Удалить
@@ -607,6 +603,113 @@ export function EmployeeForm() {
             </div>
 
           ))}
+
+        </div>
+
+        {/* DESKTOP */}
+
+        <div className="hidden md:block overflow-hidden rounded-2xl border">
+
+          <table className="w-full bg-white">
+
+            <thead className="bg-gray-50 border-b">
+
+              <tr className="text-left">
+
+                <th className="px-5 py-4 text-sm font-semibold">
+                  Фото
+                </th>
+
+                <th className="px-5 py-4 text-sm font-semibold">
+                  Сотрудник
+                </th>
+
+                <th className="px-5 py-4 text-sm font-semibold">
+                  Площадка
+                </th>
+
+                <th className="px-5 py-4 text-sm font-semibold">
+                  PIN
+                </th>
+
+                <th className="px-5 py-4 text-sm font-semibold text-right">
+                  Действия
+                </th>
+
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              {filteredEmployees.map((item) => (
+
+                <tr
+                  key={item.id}
+                  className="border-b last:border-0 hover:bg-gray-50 transition-colors"
+                >
+
+                  <td className="px-5 py-3">
+
+                    <EmployeeAvatar
+                      photoUrl={item.photo_url}
+                      fullName={item.full_name}
+                      width={44}
+                      height={56}
+                    />
+
+                  </td>
+
+                  <td className="px-5 py-3">
+
+                    <div className="font-medium">
+
+                      {item.full_name}
+
+                    </div>
+
+                  </td>
+
+                  <td className="px-5 py-3 text-sm text-gray-600">
+
+                    {item.site_id === 1
+                      ? "Арго"
+                      : "Буковая"}
+
+                  </td>
+
+                  <td className="px-5 py-3">
+
+                    <div className="inline-flex items-center rounded-lg bg-gray-100 px-3 py-1.5 font-semibold">
+
+                      {item.pin_code}
+
+                    </div>
+
+                  </td>
+
+                  <td className="px-5 py-3 text-right">
+
+                    <button
+                      onClick={() =>
+                        handleDelete(item.id)
+                      }
+                      className="h-9 px-4 rounded-xl bg-red-600 text-white text-sm font-medium"
+                    >
+
+                      Удалить
+
+                    </button>
+
+                  </td>
+
+                </tr>
+
+              ))}
+
+            </tbody>
+
+          </table>
 
         </div>
 
