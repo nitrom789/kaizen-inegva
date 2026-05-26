@@ -53,7 +53,21 @@ export default function AdminPage() {
     useState<number | null>(null);
 
   const [activeSection, setActiveSection] =
-    useState("overview");
+  useState(() => {
+
+    if (
+      typeof window !== "undefined"
+    ) {
+
+      return (
+        localStorage.getItem(
+          "admin-section"
+        ) || "overview"
+      );
+    }
+
+    return "overview";
+  });
 
   const [mobileOpen, setMobileOpen] =
     useState(false);
@@ -78,8 +92,19 @@ export default function AdminPage() {
         handleOpenMenu
       );
     };
+    
 
   }, []);
+  
+  useEffect(() => {
+
+  localStorage.setItem(
+    "admin-section",
+    activeSection
+  );
+
+}, [activeSection]);
+  
 
   const checkAdmin = async () => {
 
