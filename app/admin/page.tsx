@@ -15,7 +15,6 @@ import { EmployeeForm } from "@/components/admin/EmployeeForm";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { RewardsManagement } from "@/components/admin/RewardsManagement";
 
-
 type Improvement = {
   id: number;
   category: string;
@@ -134,84 +133,84 @@ export default function AdminPage() {
     setLoading(false);
   };
 
-const updateStatus = async (
-  id: number,
-  status: string,
-  rejectReason = ""
-) => {
+  const updateStatus = async (
+    id: number,
+    status: string,
+    rejectReason = ""
+  ) => {
 
-  const currentImprovement =
-    improvements.find(
-      (item) => item.id === id
-    );
+    const currentImprovement =
+      improvements.find(
+        (item) => item.id === id
+      );
 
-  if (!currentImprovement) {
-    return;
-  }
-
-  const { error } = await supabase
-    .from("improvements")
-    .update({
-      status,
-      reject_reason: rejectReason,
-    })
-    .eq("id", id);
-
-  if (error) {
-    console.error(error);
-    return;
-  }
-
-  if (
-    status === "Внедрено" &&
-    !currentImprovement.rewarded
-  ) {
-
-    const {
-      error: rewardError,
-    } = await supabase
-      .from("reward_transactions")
-      .insert([
-        {
-          employee_id:
-            currentImprovement.employee_id,
-
-          improvement_id:
-            currentImprovement.id,
-
-          points: 200,
-
-          type: "reward",
-
-          comment:
-            "Внедренное улучшение",
-        },
-      ]);
-
-    if (rewardError) {
-      console.error(rewardError);
+    if (!currentImprovement) {
       return;
     }
 
-    const {
-      error: rewardedError,
-    } = await supabase
+    const { error } = await supabase
       .from("improvements")
       .update({
-        rewarded: true,
+        status,
+        reject_reason: rejectReason,
       })
-      .eq(
-        "id",
-        currentImprovement.id
-      );
+      .eq("id", id);
 
-    if (rewardedError) {
-      console.error(rewardedError);
+    if (error) {
+      console.error(error);
+      return;
     }
-  }
 
-  fetchImprovements();
-};
+    if (
+      status === "Внедрено" &&
+      !currentImprovement.rewarded
+    ) {
+
+      const {
+        error: rewardError,
+      } = await supabase
+        .from("reward_transactions")
+        .insert([
+          {
+            employee_id:
+              currentImprovement.employee_id,
+
+            improvement_id:
+              currentImprovement.id,
+
+            points: 200,
+
+            type: "reward",
+
+            comment:
+              "Внедренное улучшение",
+          },
+        ]);
+
+      if (rewardError) {
+        console.error(rewardError);
+        return;
+      }
+
+      const {
+        error: rewardedError,
+      } = await supabase
+        .from("improvements")
+        .update({
+          rewarded: true,
+        })
+        .eq(
+          "id",
+          currentImprovement.id
+        );
+
+      if (rewardedError) {
+        console.error(rewardedError);
+      }
+    }
+
+    fetchImprovements();
+  };
 
   const deleteImprovement = async (
     id: number
@@ -420,98 +419,104 @@ const updateStatus = async (
             setMobileOpen={setMobileOpen}
           />
 
-          <div className="flex-1 space-y-8">
+          <div className="flex-1 flex justify-center">
 
-            {activeSection === "overview" && (
+            <div className="w-full max-w-5xl space-y-6">
 
-              <>
+              {activeSection === "overview" && (
 
-                <h1 className="text-3xl font-bold text-white">
-                  Обзор системы
-                </h1>
+                <>
 
-                <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
+                  <h1 className="text-3xl font-bold text-white">
+                    Обзор системы
+                  </h1>
 
-                  <AdminStats
-                    title="Новые"
-                    value={newItems.length}
-                  />
+                  <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
 
-                  <AdminStats
-                    title="В работе"
-                    value={inProgressItems.length}
-                  />
+                    <AdminStats
+                      title="Новые"
+                      value={newItems.length}
+                    />
 
-                  <AdminStats
-                    title="Внедрено"
-                    value={implementedItems.length}
-                  />
+                    <AdminStats
+                      title="В работе"
+                      value={inProgressItems.length}
+                    />
 
-                  <AdminStats
-                    title="Отклонено"
-                    value={rejectedItems.length}
-                  />
+                    <AdminStats
+                      title="Внедрено"
+                      value={implementedItems.length}
+                    />
+
+                    <AdminStats
+                      title="Отклонено"
+                      value={rejectedItems.length}
+                    />
+
+                  </div>
+
+                </>
+
+              )}
+
+              {activeSection === "employees" && (
+                <EmployeeForm />
+              )}
+
+              {activeSection === "improvements" && (
+
+                <div className="space-y-8">
+
+                  <div className="space-y-3">
+
+                    <h2 className="text-xl font-semibold text-white">
+                      Новые
+                    </h2>
+
+                    {renderCards(newItems)}
+
+                  </div>
+
+                  <div className="space-y-3">
+
+                    <h2 className="text-xl font-semibold text-white">
+                      В работе
+                    </h2>
+
+                    {renderCards(inProgressItems)}
+
+                  </div>
+
+                  <div className="space-y-3">
+
+                    <h2 className="text-xl font-semibold text-white">
+                      Внедрено
+                    </h2>
+
+                    {renderCards(implementedItems)}
+
+                  </div>
+
+                  <div className="space-y-3">
+
+                    <h2 className="text-xl font-semibold text-white">
+                      Отклонено
+                    </h2>
+
+                    {renderCards(rejectedItems)}
+
+                  </div>
 
                 </div>
 
-              </>
+              )}
 
-            )}
-
-            {activeSection === "employees" && (
-              <EmployeeForm />
-            )}
-
-            {activeSection === "improvements" && (
-
-              <div className="space-y-8">
-
-                <div className="space-y-3">
-
-                  <h2 className="text-xl font-semibold text-white">
-                    Новые
-                  </h2>
-
-                  {renderCards(newItems)}
-
-                </div>
-
-                <div className="space-y-3">
-
-                  <h2 className="text-xl font-semibold text-white">
-                    В работе
-                  </h2>
-
-                  {renderCards(inProgressItems)}
-
-                </div>
-
-                <div className="space-y-3">
-
-                  <h2 className="text-xl font-semibold text-white">
-                    Внедрено
-                  </h2>
-
-                  {renderCards(implementedItems)}
-
-                </div>
-
-                <div className="space-y-3">
-
-                  <h2 className="text-xl font-semibold text-white">
-                    Отклонено
-                  </h2>
-
-                  {renderCards(rejectedItems)}
-
-                </div>
-
-              </div>
-              
-            )}
-                {activeSection === "rewards" && (
+              {activeSection === "rewards" && (
                 <RewardsManagement />
-                )}
+              )}
+
+            </div>
+
           </div>
 
         </div>
