@@ -117,7 +117,7 @@ export default function AdminPage() {
       return;
     }
 
-    const userEmail = session.user.email;
+    const userEmail = session.user.email; 
 
     const { data: adminData, error } =
       await supabase
