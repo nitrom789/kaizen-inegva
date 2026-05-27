@@ -123,6 +123,7 @@ export function Header() {
           {isAdminPage && (
 
             <button
+              type="button"
               onClick={() => {
 
                 const event =
@@ -187,6 +188,7 @@ export function Header() {
             <div className="md:hidden">
 
               <button
+                type="button"
                 onClick={() =>
                   setMobileMenuOpen(
                     !mobileMenuOpen
@@ -210,6 +212,7 @@ export function Header() {
               <div className="hidden md:flex items-center gap-1 border border-white/20 rounded-xl p-1">
 
                 <button
+                  type="button"
                   onClick={() =>
                     setLanguage("ru")
                   }
@@ -225,6 +228,7 @@ export function Header() {
                 </button>
 
                 <button
+                  type="button"
                   onClick={() =>
                     setLanguage("ua")
                   }
@@ -240,6 +244,7 @@ export function Header() {
                 </button>
 
                 <button
+                  type="button"
                   onClick={() =>
                     setLanguage("en")
                   }
@@ -274,6 +279,7 @@ export function Header() {
               <div className="hidden md:flex items-center gap-1 border border-white/20 rounded-xl p-1">
 
                 <button
+                  type="button"
                   onClick={() =>
                     setLanguage("ru")
                   }
@@ -289,6 +295,7 @@ export function Header() {
                 </button>
 
                 <button
+                  type="button"
                   onClick={() =>
                     setLanguage("ua")
                   }
@@ -304,6 +311,7 @@ export function Header() {
                 </button>
 
                 <button
+                  type="button"
                   onClick={() =>
                     setLanguage("en")
                   }
@@ -331,6 +339,7 @@ export function Header() {
               </div>
 
               <button
+                type="button"
                 onClick={handleLogout}
                 className="text-white border border-white/30 px-5 py-3 rounded-2xl text-sm hover:bg-white/10 transition"
               >
