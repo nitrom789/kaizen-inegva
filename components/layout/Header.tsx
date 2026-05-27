@@ -116,9 +116,9 @@ export function Header() {
   return (
     <header className="w-full px-4 pt-4">
 
-      <div className="relative z-50 hidden md:flex items-center gap-1 border border-white/20 rounded-xl p-1 pointer-events-auto">
+      <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl px-6 py-4">
 
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center justify-between gap-6">
 
           {isAdminPage && (
 
@@ -144,7 +144,7 @@ export function Header() {
 
           )}
 
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-2 flex-1">
 
             {navItems.map((item) => (
 
@@ -205,61 +205,61 @@ export function Header() {
 
           )}
 
-          {!userEmail ? (
+          <div className="flex items-center gap-4 shrink-0">
 
-            <div className="flex items-center gap-4">
+            <div className="relative z-50 hidden md:flex items-center gap-1 border border-white/20 rounded-xl p-1">
 
-              <div className="hidden md:flex items-center gap-1 border border-white/20 rounded-xl p-1">
+              <button
+                type="button"
+                onClick={() =>
+                  setLanguage("ru")
+                }
+                className={`px-2 py-1 rounded-lg text-xs transition ${
+                  language === "ru"
+                    ? "bg-white text-blue-600"
+                    : "text-white"
+                }`}
+              >
 
-                <button
-                  type="button"
-                  onClick={() =>
-                    setLanguage("ru")
-                  }
-                  className={`px-2 py-1 rounded-lg text-xs transition ${
-                    language === "ru"
-                      ? "bg-white text-blue-600"
-                      : "text-white"
-                  }`}
-                >
+                RU
 
-                  RU
+              </button>
 
-                </button>
+              <button
+                type="button"
+                onClick={() =>
+                  setLanguage("ua")
+                }
+                className={`px-2 py-1 rounded-lg text-xs transition ${
+                  language === "ua"
+                    ? "bg-white text-blue-600"
+                    : "text-white"
+                }`}
+              >
 
-                <button
-                  type="button"
-                  onClick={() =>
-                    setLanguage("ua")
-                  }
-                  className={`px-2 py-1 rounded-lg text-xs transition ${
-                    language === "ua"
-                      ? "bg-white text-blue-600"
-                      : "text-white"
-                  }`}
-                >
+                UA
 
-                  UA
+              </button>
 
-                </button>
+              <button
+                type="button"
+                onClick={() =>
+                  setLanguage("en")
+                }
+                className={`px-2 py-1 rounded-lg text-xs transition ${
+                  language === "en"
+                    ? "bg-white text-blue-600"
+                    : "text-white"
+                }`}
+              >
 
-                <button
-                  type="button"
-                  onClick={() =>
-                    setLanguage("en")
-                  }
-                  className={`px-2 py-1 rounded-lg text-xs transition ${
-                    language === "en"
-                      ? "bg-white text-blue-600"
-                      : "text-white"
-                  }`}
-                >
+                EN
 
-                  EN
+              </button>
 
-                </button>
+            </div>
 
-              </div>
+            {!userEmail ? (
 
               <Link
                 href="/login"
@@ -270,85 +270,35 @@ export function Header() {
 
               </Link>
 
-            </div>
+            ) : (
 
-          ) : (
+              <>
 
-            <div className="flex items-center gap-4">
+                <div className="text-right hidden sm:block">
 
-              <div className="hidden md:flex items-center gap-1 border border-white/20 rounded-xl p-1">
+                  <p className="text-white text-sm font-semibold">
 
-                <button
-                  type="button"
-                  onClick={() =>
-                    setLanguage("ru")
-                  }
-                  className={`px-2 py-1 rounded-lg text-xs transition ${
-                    language === "ru"
-                      ? "bg-white text-blue-600"
-                      : "text-white"
-                  }`}
-                >
+                    {userEmail}
 
-                  RU
+                  </p>
 
-                </button>
+                </div>
 
                 <button
                   type="button"
-                  onClick={() =>
-                    setLanguage("ua")
-                  }
-                  className={`px-2 py-1 rounded-lg text-xs transition ${
-                    language === "ua"
-                      ? "bg-white text-blue-600"
-                      : "text-white"
-                  }`}
+                  onClick={handleLogout}
+                  className="text-white border border-white/30 px-5 py-3 rounded-2xl text-sm hover:bg-white/10 transition"
                 >
 
-                  UA
+                  {t.logout}
 
                 </button>
 
-                <button
-                  type="button"
-                  onClick={() =>
-                    setLanguage("en")
-                  }
-                  className={`px-2 py-1 rounded-lg text-xs transition ${
-                    language === "en"
-                      ? "bg-white text-blue-600"
-                      : "text-white"
-                  }`}
-                >
+              </>
 
-                  EN
+            )}
 
-                </button>
-
-              </div>
-
-              <div className="text-right hidden sm:block">
-
-                <p className="text-white text-sm font-semibold">
-                  {language.toUpperCase()}
-                </p>
-
-              </div>
-
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="text-white border border-white/30 px-5 py-3 rounded-2xl text-sm hover:bg-white/10 transition"
-              >
-
-                {t.logout}
-
-              </button>
-
-            </div>
-
-          )}
+          </div>
 
         </div>
 
@@ -376,26 +326,6 @@ export function Header() {
               </Link>
 
             ))}
-
-            {!isAdminPage && userEmail && (
-
-              <Link
-                href="/admin"
-                onClick={() =>
-                  setMobileMenuOpen(false)
-                }
-                className={`px-4 py-3 rounded-xl text-sm font-medium transition ${
-                  pathname === "/admin"
-                    ? "bg-white text-blue-600"
-                    : "text-white hover:bg-white/10"
-                }`}
-              >
-
-                Администрирование
-
-              </Link>
-
-            )}
 
           </div>
 
