@@ -418,22 +418,46 @@ export function EmployeeForm() {
 
             </label>
 
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
+            <div className="space-y-3">
 
-                const file =
-                  e.target.files?.[0];
+  <label
+    htmlFor="employee-photo-upload"
+    className="h-11 px-4 rounded-xl border flex items-center justify-center cursor-pointer hover:bg-gray-50 transition text-sm font-medium"
+  >
 
-                if (!file) {
-                  return;
-                }
+    📷 Выбрать фото
 
-                setPhotoFile(file);
-              }}
-              className="w-full h-11 rounded-xl border px-4 py-2"
-            />
+  </label>
+
+  <input
+    id="employee-photo-upload"
+    type="file"
+    accept="image/*"
+    onChange={(e) => {
+
+      const file =
+        e.target.files?.[0];
+
+      if (!file) {
+        return;
+      }
+
+      setPhotoFile(file);
+    }}
+    className="hidden"
+  />
+
+  {photoFile && (
+
+    <div className="text-sm text-gray-500 break-all">
+
+      {photoFile.name}
+
+    </div>
+
+  )}
+
+</div>
 
           </div>
 
