@@ -88,7 +88,16 @@ const navItems = isHomePage
       setUserEmail(session.user.email);
     }
   };
+  useEffect(() => {
 
+  checkUser();
+
+  }, []);
+  useEffect(() => {
+
+  checkUser();
+
+  }, []);
   const handleLogout = async () => {
 
     await supabase.auth.signOut();
@@ -188,12 +197,8 @@ const navItems = isHomePage
 
               <div className="text-right hidden sm:block">
 
-                <p className="text-white text-sm font-semibold">
-                  {userEmail}
-                </p>
-
-                <p className="text-white/70 text-xs">
-                  Администратор
+               <p className="text-white text-sm font-semibold">
+                 {userEmail}
                 </p>
 
               </div>
