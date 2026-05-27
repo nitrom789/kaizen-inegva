@@ -21,9 +21,11 @@ type ContextType = {
     language: Language
   ) => void;
 
-  t: typeof translations.ru;
+  t: Record<
+    string,
+    string
+  >;
 };
-
 const LanguageContext =
   createContext<ContextType>({
     language: "ru",
@@ -64,13 +66,15 @@ export function LanguageProvider({
 
   }, [language]);
 
-  const value = {
-    language,
+const value: ContextType = {
+  language,
 
-    setLanguage,
+  setLanguage,
 
-    t: translations[language],
-  };
+  t: translations[
+    language
+  ] || translations.ru,
+};
 
   return (
     <LanguageContext.Provider
