@@ -13,9 +13,17 @@ import {
 
 import { supabase } from "@/lib/supabase";
 
+import { useLanguage } from "@/contexts/LanguageContext";
+
 export function Header() {
 
   const pathname = usePathname();
+
+  const {
+    t,
+    language,
+    setLanguage,
+  } = useLanguage();
 
   const [userEmail, setUserEmail] =
     useState("");
@@ -39,44 +47,44 @@ export function Header() {
     ? "/bukovaya"
     : "";
 
-const isHomePage =
-  pathname === "/";
+  const isHomePage =
+    pathname === "/";
 
-const navItems = isHomePage
-  ? []
-  : isAdminPage
-  ? [
-      {
-        label: "Главная",
-        href: "/",
-      },
-    ]
-  : [
-      {
-        label: "Главная",
-        href: basePath || "/",
-      },
-      {
-        label: "Новая",
-        href: `${basePath}/new`,
-      },
-      {
-        label: "В работе",
-        href: `${basePath}/in-progress`,
-      },
-      {
-        label: "Внедрено",
-        href: `${basePath}/implemented`,
-      },
-      {
-        label: "Отклонено",
-        href: `${basePath}/rejected`,
-      },
-      {
-        label: "Таблица баллов",
-        href: `${basePath}/points`,
-      },
-    ];
+  const navItems = isHomePage
+    ? []
+    : isAdminPage
+    ? [
+        {
+          label: "Главная",
+          href: "/",
+        },
+      ]
+    : [
+        {
+          label: "Главная",
+          href: basePath || "/",
+        },
+        {
+          label: "Новая",
+          href: `${basePath}/new`,
+        },
+        {
+          label: "В работе",
+          href: `${basePath}/in-progress`,
+        },
+        {
+          label: "Внедрено",
+          href: `${basePath}/implemented`,
+        },
+        {
+          label: "Отклонено",
+          href: `${basePath}/rejected`,
+        },
+        {
+          label: "Таблица баллов",
+          href: `${basePath}/points`,
+        },
+      ];
 
   const checkUser = async () => {
 
@@ -85,19 +93,19 @@ const navItems = isHomePage
     } = await supabase.auth.getSession();
 
     if (session?.user?.email) {
-      setUserEmail(session.user.email);
+
+      setUserEmail(
+        session.user.email
+      );
     }
   };
+
   useEffect(() => {
 
-  checkUser();
+    checkUser();
 
   }, []);
-  useEffect(() => {
 
-  checkUser();
-
-  }, []);
   const handleLogout = async () => {
 
     await supabase.auth.signOut();
@@ -117,15 +125,20 @@ const navItems = isHomePage
             <button
               onClick={() => {
 
-                const event = new CustomEvent(
-                  "open-admin-mobile-menu"
-                );
+                const event =
+                  new CustomEvent(
+                    "open-admin-mobile-menu"
+                  );
 
-                window.dispatchEvent(event);
+                window.dispatchEvent(
+                  event
+                );
               }}
               className="lg:hidden text-white border border-white/30 px-4 py-2 rounded-xl text-sm"
             >
+
               Меню
+
             </button>
 
           )}
@@ -143,7 +156,9 @@ const navItems = isHomePage
                     : "text-white hover:bg-white/10"
                 }`}
               >
+
                 {item.label}
+
               </Link>
 
             ))}
@@ -158,7 +173,9 @@ const navItems = isHomePage
                     : "text-white hover:bg-white/10"
                 }`}
               >
+
                 Администрирование
+
               </Link>
 
             )}
@@ -171,11 +188,15 @@ const navItems = isHomePage
 
               <button
                 onClick={() =>
-                  setMobileMenuOpen(!mobileMenuOpen)
+                  setMobileMenuOpen(
+                    !mobileMenuOpen
+                  )
                 }
                 className="text-white border border-white/30 px-4 py-2 rounded-xl text-sm"
               >
+
                 Меню
+
               </button>
 
             </div>
@@ -184,21 +205,127 @@ const navItems = isHomePage
 
           {!userEmail ? (
 
-            <Link
-              href="/login"
-              className="text-white border border-white/30 px-5 py-3 rounded-2xl text-sm whitespace-nowrap hover:bg-white/10 transition"
-            >
-              Войти
-            </Link>
+            <div className="flex items-center gap-4">
+
+              <div className="hidden md:flex items-center gap-1 border border-white/20 rounded-xl p-1">
+
+                <button
+                  onClick={() =>
+                    setLanguage("ru")
+                  }
+                  className={`px-2 py-1 rounded-lg text-xs transition ${
+                    language === "ru"
+                      ? "bg-white text-blue-600"
+                      : "text-white"
+                  }`}
+                >
+
+                  RU
+
+                </button>
+
+                <button
+                  onClick={() =>
+                    setLanguage("ua")
+                  }
+                  className={`px-2 py-1 rounded-lg text-xs transition ${
+                    language === "ua"
+                      ? "bg-white text-blue-600"
+                      : "text-white"
+                  }`}
+                >
+
+                  UA
+
+                </button>
+
+                <button
+                  onClick={() =>
+                    setLanguage("en")
+                  }
+                  className={`px-2 py-1 rounded-lg text-xs transition ${
+                    language === "en"
+                      ? "bg-white text-blue-600"
+                      : "text-white"
+                  }`}
+                >
+
+                  EN
+
+                </button>
+
+              </div>
+
+              <Link
+                href="/login"
+                className="text-white border border-white/30 px-5 py-3 rounded-2xl text-sm whitespace-nowrap hover:bg-white/10 transition"
+              >
+
+                {t.login}
+
+              </Link>
+
+            </div>
 
           ) : (
 
             <div className="flex items-center gap-4">
 
+              <div className="hidden md:flex items-center gap-1 border border-white/20 rounded-xl p-1">
+
+                <button
+                  onClick={() =>
+                    setLanguage("ru")
+                  }
+                  className={`px-2 py-1 rounded-lg text-xs transition ${
+                    language === "ru"
+                      ? "bg-white text-blue-600"
+                      : "text-white"
+                  }`}
+                >
+
+                  RU
+
+                </button>
+
+                <button
+                  onClick={() =>
+                    setLanguage("ua")
+                  }
+                  className={`px-2 py-1 rounded-lg text-xs transition ${
+                    language === "ua"
+                      ? "bg-white text-blue-600"
+                      : "text-white"
+                  }`}
+                >
+
+                  UA
+
+                </button>
+
+                <button
+                  onClick={() =>
+                    setLanguage("en")
+                  }
+                  className={`px-2 py-1 rounded-lg text-xs transition ${
+                    language === "en"
+                      ? "bg-white text-blue-600"
+                      : "text-white"
+                  }`}
+                >
+
+                  EN
+
+                </button>
+
+              </div>
+
               <div className="text-right hidden sm:block">
 
-               <p className="text-white text-sm font-semibold">
-                 {userEmail}
+                <p className="text-white text-sm font-semibold">
+
+                  {userEmail}
+
                 </p>
 
               </div>
@@ -207,7 +334,9 @@ const navItems = isHomePage
                 onClick={handleLogout}
                 className="text-white border border-white/30 px-5 py-3 rounded-2xl text-sm hover:bg-white/10 transition"
               >
-                Выйти
+
+                {t.logout}
+
               </button>
 
             </div>
@@ -234,7 +363,9 @@ const navItems = isHomePage
                     : "text-white hover:bg-white/10"
                 }`}
               >
+
                 {item.label}
+
               </Link>
 
             ))}
@@ -252,7 +383,9 @@ const navItems = isHomePage
                     : "text-white hover:bg-white/10"
                 }`}
               >
+
                 Администрирование
+
               </Link>
 
             )}
