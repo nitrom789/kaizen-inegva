@@ -114,9 +114,9 @@ export function Header() {
   };
 
   return (
-    <header className="w-full px-4 pt-4">
+    <header className="relative z-[9999] w-full px-4 pt-4 pointer-events-auto">
 
-      <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl px-6 py-4">
+      <div className="relative z-[9999] bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl px-6 py-4 pointer-events-auto">
 
         <div className="flex items-center justify-between gap-6">
 
@@ -207,7 +207,7 @@ export function Header() {
 
           <div className="flex items-center gap-4 shrink-0">
 
-            <div className="relative z-50 hidden md:flex items-center gap-1 border border-white/20 rounded-xl p-1">
+            <div className="relative z-[9999] hidden md:flex items-center gap-1 border border-white/20 rounded-xl p-1 pointer-events-auto">
 
               <button
                 type="button"
