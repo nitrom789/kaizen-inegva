@@ -116,7 +116,7 @@ export function Header() {
   return (
     <header className="w-full px-4 pt-4">
 
-      <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl px-6 py-4">
+      <div className="relative z-50 hidden md:flex items-center gap-1 border border-white/20 rounded-xl p-1 pointer-events-auto">
 
         <div className="flex items-center justify-between gap-4">
 
@@ -212,13 +212,10 @@ export function Header() {
               <div className="hidden md:flex items-center gap-1 border border-white/20 rounded-xl p-1">
 
                 <button
-  type="button"
-  onClick={() => {
-
-    alert("CLICK");
-
-    setLanguage("ru");
-  }}
+                  type="button"
+                  onClick={() =>
+                    setLanguage("ru")
+                  }
                   className={`px-2 py-1 rounded-lg text-xs transition ${
                     language === "ru"
                       ? "bg-white text-blue-600"
