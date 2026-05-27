@@ -211,9 +211,9 @@ export function Header() {
 
               <button
                 type="button"
-                onClick={() =>
-                  setLanguage("ru")
-                }
+                onClick={() => {
+                  console.log("CLICK");
+                }}
                 className={`px-2 py-1 rounded-lg text-xs transition ${
                   language === "ru"
                     ? "bg-white text-blue-600"
