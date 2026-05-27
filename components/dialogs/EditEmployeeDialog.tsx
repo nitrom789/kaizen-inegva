@@ -224,27 +224,51 @@ export function EditEmployeeDialog({
 
           </label>
 
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => {
+          <div className="space-y-3">
 
-              const file =
-                e.target.files?.[0];
+  <label
+    htmlFor="photo-upload"
+    className="h-11 px-4 rounded-xl border flex items-center justify-center cursor-pointer hover:bg-gray-50 transition text-sm font-medium"
+  >
 
-              if (!file) {
-                return;
-              }
+    📷 Выбрать фото
 
-              setPhotoFile(file);
+  </label>
 
-              const previewUrl =
-                URL.createObjectURL(file);
+  <input
+    id="photo-upload"
+    type="file"
+    accept="image/*"
+    onChange={(e) => {
 
-              setPhotoUrl(previewUrl);
-            }}
-            className="w-full h-11 rounded-xl border px-4 py-2"
-          />
+      const file =
+        e.target.files?.[0];
+
+      if (!file) {
+        return;
+      }
+
+      setPhotoFile(file);
+
+      const previewUrl =
+        URL.createObjectURL(file);
+
+      setPhotoUrl(previewUrl);
+    }}
+    className="hidden"
+  />
+
+  {photoFile && (
+
+    <div className="text-sm text-gray-500 break-all">
+
+      {photoFile.name}
+
+    </div>
+
+  )}
+
+</div>
 
         </div>
 
