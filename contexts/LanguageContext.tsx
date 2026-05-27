@@ -4,6 +4,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 
@@ -14,6 +15,9 @@ type Language =
   | "ua"
   | "en";
 
+type Translation =
+  Record<string, string>;
+
 type ContextType = {
   language: Language;
 
@@ -21,11 +25,9 @@ type ContextType = {
     language: Language
   ) => void;
 
-  t: Record<
-    string,
-    string
-  >;
+  t: Translation;
 };
+
 const LanguageContext =
   createContext<ContextType>({
     language: "ru",
@@ -52,7 +54,10 @@ export function LanguageProvider({
       ) as Language | null;
 
     if (savedLanguage) {
-      setLanguage(savedLanguage);
+
+      setLanguage(
+        savedLanguage
+      );
     }
 
   }, []);
@@ -66,15 +71,26 @@ export function LanguageProvider({
 
   }, [language]);
 
-const value: ContextType = {
-  language,
+  const t = useMemo(() => {
 
-  setLanguage,
+    return (
+      translations[language] ||
+      translations.ru
+    );
 
-  t: translations[
-    language
-  ] || translations.ru,
-};
+  }, [language]);
+
+  const value = useMemo(() => {
+
+    return {
+      language,
+
+      setLanguage,
+
+      t,
+    };
+
+  }, [language, t]);
 
   return (
     <LanguageContext.Provider
@@ -88,6 +104,7 @@ const value: ContextType = {
 }
 
 export function useLanguage() {
+
   return useContext(
     LanguageContext
   );
