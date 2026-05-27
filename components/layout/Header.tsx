@@ -331,9 +331,7 @@ export function Header() {
               <div className="text-right hidden sm:block">
 
                 <p className="text-white text-sm font-semibold">
-
-                  {userEmail}
-
+                  {language.toUpperCase()}
                 </p>
 
               </div>
