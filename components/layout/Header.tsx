@@ -212,10 +212,13 @@ export function Header() {
               <div className="hidden md:flex items-center gap-1 border border-white/20 rounded-xl p-1">
 
                 <button
-                  type="button"
-                  onClick={() =>
-                    setLanguage("ru")
-                  }
+  type="button"
+  onClick={() => {
+
+    alert("CLICK");
+
+    setLanguage("ru");
+  }}
                   className={`px-2 py-1 rounded-lg text-xs transition ${
                     language === "ru"
                       ? "bg-white text-blue-600"
