@@ -13,6 +13,7 @@ import { EmployeeAvatar } from "@/components/ui/EmployeeAvatar";
 import { supabase } from "@/lib/supabase";
 
 import { toast } from "sonner";
+import { EditEmployeeDialog } from "@/components/dialogs/EditEmployeeDialog";
 
 type Employee = {
   id: number;
@@ -44,6 +45,15 @@ export function EmployeeForm() {
 
   const [filterSite, setFilterSite] =
     useState("all");
+    
+  const [editOpen, setEditOpen] =
+  useState(false);
+
+  const [selectedEmployee,
+  setSelectedEmployee] =
+  useState<Employee | null>(
+    null
+  );
 
   useEffect(() => {
     fetchEmployees();
@@ -587,16 +597,34 @@ export function EmployeeForm() {
 
                 </div>
 
-                <button
-                  onClick={() =>
-                    handleDelete(item.id)
-                  }
-                  className="mt-3 h-8 px-3 rounded-lg bg-red-600 text-white text-xs font-medium"
-                >
+                <div className="mt-3 flex gap-2">
 
-                  Удалить
+  <button
+    onClick={() => {
 
-                </button>
+      setSelectedEmployee(item);
+
+      setEditOpen(true);
+    }}
+    className="h-8 px-3 rounded-lg bg-blue-600 text-white text-xs font-medium"
+  >
+
+    Изменить
+
+  </button>
+
+  <button
+    onClick={() =>
+      handleDelete(item.id)
+    }
+    className="h-8 px-3 rounded-lg bg-red-600 text-white text-xs font-medium"
+  >
+
+    Удалить
+
+  </button>
+
+</div>
 
               </div>
 
@@ -690,18 +718,36 @@ export function EmployeeForm() {
 
                   <td className="px-5 py-3 text-right">
 
-                    <button
-                      onClick={() =>
-                        handleDelete(item.id)
-                      }
-                      className="h-9 px-4 rounded-xl bg-red-600 text-white text-sm font-medium"
-                    >
+  <div className="flex items-center justify-end gap-2">
 
-                      Удалить
+    <button
+      onClick={() => {
 
-                    </button>
+        setSelectedEmployee(item);
 
-                  </td>
+        setEditOpen(true);
+      }}
+      className="h-9 px-4 rounded-xl bg-blue-600 text-white text-sm font-medium"
+    >
+
+      Редактировать
+
+    </button>
+
+    <button
+      onClick={() =>
+        handleDelete(item.id)
+      }
+      className="h-9 px-4 rounded-xl bg-red-600 text-white text-sm font-medium"
+    >
+
+      Удалить
+
+    </button>
+
+  </div>
+
+</td>
 
                 </tr>
 
@@ -714,7 +760,14 @@ export function EmployeeForm() {
         </div>
 
       </div>
-
+        <EditEmployeeDialog
+  open={editOpen}
+  onClose={() =>
+    setEditOpen(false)
+  }
+  employee={selectedEmployee}
+  onUpdated={fetchEmployees}
+/>
     </div>
   );
 }
