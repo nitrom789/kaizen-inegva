@@ -1,6 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { translations } from "@/lib/translations";
+const t =
+  translations[language];
 
 import {
   useEffect,
@@ -20,10 +23,9 @@ export function Header() {
   const pathname = usePathname();
 
   const {
-    t,
-    language,
-    setLanguage,
-  } = useLanguage();
+  language,
+  setLanguage,
+} = useLanguage();
 
   const [userEmail, setUserEmail] =
     useState("");
@@ -278,7 +280,7 @@ export function Header() {
 
                   <p className="text-white text-sm font-semibold">
 
-                    {language}
+                    {userEmail}
 
                   </p>
 
