@@ -57,33 +57,33 @@ export function Header() {
     : isAdminPage
     ? [
         {
-          label: "Главная",
+          label: t.home,
           href: "/",
         },
       ]
     : [
         {
-          label: "Главная",
+          label: t.home,
           href: basePath || "/",
         },
         {
-          label: "Новая",
+          label: t.new,
           href: `${basePath}/new`,
         },
         {
-          label: "В работе",
+          label: t.inProgress,
           href: `${basePath}/in-progress`,
         },
         {
-          label: "Внедрено",
+          label: t.implemented,
           href: `${basePath}/implemented`,
         },
         {
-          label: "Отклонено",
+          label: t.rejected,
           href: `${basePath}/rejected`,
         },
         {
-          label: "Таблица баллов",
+          label: t.points,
           href: `${basePath}/points`,
         },
       ];
@@ -165,7 +165,7 @@ export function Header() {
               className="lg:hidden text-white border border-white/30 px-4 py-2 rounded-xl text-sm"
             >
 
-              Меню
+              {t.menu}
 
             </button>
 
@@ -202,7 +202,7 @@ export function Header() {
                 }`}
               >
 
-                Администрирование
+                {t.admin}
 
               </Link>
 
@@ -224,7 +224,7 @@ export function Header() {
                 className="text-white border border-white/30 px-4 py-2 rounded-xl text-sm"
               >
 
-                Меню
+                {t.menu}
 
               </button>
 
@@ -353,6 +353,26 @@ export function Header() {
               </Link>
 
             ))}
+
+            {!isAdminPage && userEmail && (
+
+              <Link
+                href="/admin"
+                onClick={() =>
+                  setMobileMenuOpen(false)
+                }
+                className={`px-4 py-3 rounded-xl text-sm font-medium transition ${
+                  pathname === "/admin"
+                    ? "bg-white text-blue-600"
+                    : "text-white hover:bg-white/10"
+                }`}
+              >
+
+                {t.admin}
+
+              </Link>
+
+            )}
 
           </div>
 

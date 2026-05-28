@@ -9,6 +9,14 @@ export const translations = {
     cancel: "Отмена",
     delete: "Удалить",
     edit: "Редактировать",
+    home: "Главная",
+    new: "Новая",
+    inProgress: "В работе",
+    implemented: "Внедрено",
+    rejected: "Отклонено",
+    points: "Таблица баллов",
+    admin: "Администрирование",
+    menu: "Меню",
 
     addEmployee:
       "Добавить сотрудника",
@@ -34,7 +42,14 @@ export const translations = {
 
     login: "Увійти",
     logout: "Вийти",
-
+    home: "Головна",
+    new: "Нова",
+    inProgress: "В роботі",
+    implemented: "Впроваджено",
+    rejected: "Відхилено",  
+    points: "Таблиця балів",
+    admin: "Адміністрування",
+    menu: "Меню",
     save: "Зберегти",
     cancel: "Скасувати",
     delete: "Видалити",
@@ -64,7 +79,14 @@ export const translations = {
 
     login: "Login",
     logout: "Logout",
-
+    home: "Home",
+    new: "New",
+    inProgress: "In progress",
+    implemented: "Implemented",
+    rejected: "Rejected",
+    points: "Points table",
+    admin: "Administration",
+    menu: "Menu",
     save: "Save",
     cancel: "Cancel",
     delete: "Delete",
