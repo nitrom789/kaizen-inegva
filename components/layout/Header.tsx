@@ -211,9 +211,9 @@ export function Header() {
 
               <button
                 type="button"
-                onClick={() => {
-                  console.log("CLICK");
-                }}
+                onClick={() =>
+                  setLanguage("ru")
+                }
                 className={`px-2 py-1 rounded-lg text-xs transition ${
                   language === "ru"
                     ? "bg-white text-blue-600"
@@ -278,7 +278,7 @@ export function Header() {
 
                   <p className="text-white text-sm font-semibold">
 
-                    {userEmail}
+                    {language}
 
                   </p>
 
