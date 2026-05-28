@@ -10,17 +10,15 @@ import {
 type ContextType = {
   language: string;
 
-  setLanguage: (
-    language: string
-  ) => void;
+  setLanguage: React.Dispatch<
+    React.SetStateAction<string>
+  >;
 };
 
 const LanguageContext =
-  createContext<ContextType>({
-    language: "ru",
-
-    setLanguage: () => {},
-  });
+  createContext<ContextType | null>(
+    null
+  );
 
 export function LanguageProvider({
   children,
@@ -72,7 +70,17 @@ export function LanguageProvider({
 
 export function useLanguage() {
 
-  return useContext(
-    LanguageContext
-  );
+  const context =
+    useContext(
+      LanguageContext
+    );
+
+  if (!context) {
+
+    throw new Error(
+      "useLanguage must be used inside LanguageProvider"
+    );
+  }
+
+  return context;
 }
