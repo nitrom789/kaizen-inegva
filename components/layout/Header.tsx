@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 import { translations } from "@/lib/translations";
-const t =
-  translations[language];
+
 
 import {
   useEffect,
@@ -26,6 +25,8 @@ export function Header() {
   language,
   setLanguage,
 } = useLanguage();
+  const t =
+  translations[language];
 
   const [userEmail, setUserEmail] =
     useState("");
