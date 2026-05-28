@@ -13,18 +13,14 @@ import {
 
 import { supabase } from "@/lib/supabase";
 
-import { useLanguage } from "@/contexts/LanguageContext";
-
 import { translations } from "@/lib/translations";
 
 export function Header() {
 
   const pathname = usePathname();
 
-  const {
-    language,
-    setLanguage,
-  } = useLanguage();
+  const [language, setLanguage] =
+    useState("ru");
 
   const t =
     translations[
@@ -91,6 +87,31 @@ export function Header() {
           href: `${basePath}/points`,
         },
       ];
+
+  useEffect(() => {
+
+    const savedLanguage =
+      localStorage.getItem(
+        "language"
+      );
+
+    if (savedLanguage) {
+
+      setLanguage(
+        savedLanguage
+      );
+    }
+
+  }, []);
+
+  useEffect(() => {
+
+    localStorage.setItem(
+      "language",
+      language
+    );
+
+  }, [language]);
 
   const checkUser = async () => {
 
