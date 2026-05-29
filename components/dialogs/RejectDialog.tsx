@@ -11,6 +11,8 @@ import {
 
 import { Button } from "@/components/ui/button";
 
+import { useTranslation } from "@/hooks/useTranslation";
+
 type RejectDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -23,7 +25,10 @@ export function RejectDialog({
   onConfirm,
 }: RejectDialogProps) {
 
-  const [reason, setReason] = useState("");
+  const { t } = useTranslation();
+
+  const [reason, setReason] =
+    useState("");
 
   const handleConfirm = () => {
 
@@ -49,15 +54,23 @@ export function RejectDialog({
         <DialogHeader>
 
           <DialogTitle>
-            Причина отклонения
+
+            {t.rejectReason}
+
           </DialogTitle>
 
         </DialogHeader>
 
         <textarea
           value={reason}
-          onChange={(e) => setReason(e.target.value)}
-          placeholder="Введите причину отклонения..."
+          onChange={(e) =>
+            setReason(
+              e.target.value
+            )
+          }
+          placeholder={
+            t.enterRejectReason
+          }
           className="w-full min-h-[140px] rounded-xl border px-4 py-3 resize-none"
         />
 
@@ -65,7 +78,9 @@ export function RejectDialog({
           onClick={handleConfirm}
           className="w-full"
         >
-          Подтвердить отклонение
+
+          {t.confirmReject}
+
         </Button>
 
       </DialogContent>

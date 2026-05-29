@@ -9,6 +9,8 @@ import {
 
 import { Button } from "@/components/ui/button";
 
+import { useTranslation } from "@/hooks/useTranslation";
+
 type DeleteDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -21,6 +23,8 @@ export function DeleteDialog({
   onConfirm,
 }: DeleteDialogProps) {
 
+  const { t } = useTranslation();
+
   return (
     <Dialog
       open={open}
@@ -30,29 +34,41 @@ export function DeleteDialog({
       <DialogContent className="rounded-2xl">
 
         <DialogHeader>
+
           <DialogTitle>
-            Удалить предложение?
+
+            {t.deleteProposal}
+
           </DialogTitle>
+
         </DialogHeader>
 
         <p className="text-sm text-gray-500">
-          Это действие нельзя отменить.
+
+          {t.deleteWarning}
+
         </p>
 
         <div className="flex justify-end gap-3 pt-4">
 
           <Button
             variant="outline"
-            onClick={() => onOpenChange(false)}
+            onClick={() =>
+              onOpenChange(false)
+            }
           >
-            Отмена
+
+            {t.cancel}
+
           </Button>
 
           <Button
             variant="destructive"
             onClick={onConfirm}
           >
-            Удалить
+
+            {t.delete}
+
           </Button>
 
         </div>
