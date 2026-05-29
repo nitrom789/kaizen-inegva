@@ -8,6 +8,8 @@ import { supabase } from "@/lib/supabase";
 
 import { toast } from "sonner";
 
+import { useTranslation } from "@/hooks/useTranslation";
+
 type Employee = {
   id: number;
   full_name: string;
@@ -32,6 +34,8 @@ export function EditEmployeeDialog({
   employee,
   onUpdated,
 }: Props) {
+
+  const { t } = useTranslation();
 
   const [fullName, setFullName] =
     useState("");
@@ -111,7 +115,7 @@ export function EditEmployeeDialog({
         console.error(uploadError);
 
         toast.error(
-          "Ошибка загрузки фото"
+          t.photoUploadError
         );
 
         setLoading(false);
@@ -158,14 +162,14 @@ export function EditEmployeeDialog({
       console.error(error);
 
       toast.error(
-        "Ошибка сохранения"
+        t.saveError
       );
 
       return;
     }
 
     toast.success(
-      "Сотрудник обновлен"
+      t.employeeUpdated
     );
 
     onUpdated();
@@ -184,7 +188,7 @@ export function EditEmployeeDialog({
 
         <h2 className="text-2xl font-bold">
 
-          Редактирование сотрудника
+          {t.editEmployee}
 
         </h2>
 
@@ -220,55 +224,55 @@ export function EditEmployeeDialog({
 
           <label className="text-sm font-medium">
 
-            Заменить фото
+            {t.replacePhoto}
 
           </label>
 
           <div className="space-y-3">
 
-  <label
-    htmlFor="photo-upload"
-    className="h-11 px-4 rounded-xl border flex items-center justify-center cursor-pointer hover:bg-gray-50 transition text-sm font-medium"
-  >
+            <label
+              htmlFor="photo-upload"
+              className="h-11 px-4 rounded-xl border flex items-center justify-center cursor-pointer hover:bg-gray-50 transition text-sm font-medium"
+            >
 
-    📷 Выбрать фото
+              📷 {t.uploadPhoto}
 
-  </label>
+            </label>
 
-  <input
-    id="photo-upload"
-    type="file"
-    accept="image/*"
-    onChange={(e) => {
+            <input
+              id="photo-upload"
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
 
-      const file =
-        e.target.files?.[0];
+                const file =
+                  e.target.files?.[0];
 
-      if (!file) {
-        return;
-      }
+                if (!file) {
+                  return;
+                }
 
-      setPhotoFile(file);
+                setPhotoFile(file);
 
-      const previewUrl =
-        URL.createObjectURL(file);
+                const previewUrl =
+                  URL.createObjectURL(file);
 
-      setPhotoUrl(previewUrl);
-    }}
-    className="hidden"
-  />
+                setPhotoUrl(previewUrl);
+              }}
+              className="hidden"
+            />
 
-  {photoFile && (
+            {photoFile && (
 
-    <div className="text-sm text-gray-500 break-all">
+              <div className="text-sm text-gray-500 break-all">
 
-      {photoFile.name}
+                {photoFile.name}
 
-    </div>
+              </div>
 
-  )}
+            )}
 
-</div>
+          </div>
 
         </div>
 
@@ -276,7 +280,7 @@ export function EditEmployeeDialog({
 
           <label className="text-sm font-medium">
 
-            ФИО
+            {t.fullName}
 
           </label>
 
@@ -296,7 +300,7 @@ export function EditEmployeeDialog({
 
           <label className="text-sm font-medium">
 
-            PIN-код
+            {t.pinCode}
 
           </label>
 
@@ -316,7 +320,7 @@ export function EditEmployeeDialog({
 
           <label className="text-sm font-medium">
 
-            Площадка
+            {t.site}
 
           </label>
 
@@ -331,11 +335,11 @@ export function EditEmployeeDialog({
           >
 
             <option value="1">
-              Арго
+              {t.argo}
             </option>
 
             <option value="2">
-              Буковая
+              {t.bukovaya}
             </option>
 
           </select>
@@ -349,7 +353,7 @@ export function EditEmployeeDialog({
             className="flex-1 h-11 rounded-xl border"
           >
 
-            Отмена
+            {t.cancel}
 
           </button>
 
@@ -360,8 +364,8 @@ export function EditEmployeeDialog({
           >
 
             {loading
-              ? "Сохранение..."
-              : "Сохранить"}
+              ? t.saving
+              : t.save}
 
           </button>
 

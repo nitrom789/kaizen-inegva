@@ -17,6 +17,15 @@ export const translations = {
     points: "Таблица баллов",
     admin: "Администрирование",
     menu: "Меню",
+    editEmployee: "Редактирование сотрудника",
+    replacePhoto: "Заменить фото",
+    photoUploadError: "Ошибка загрузки фото",
+    saveError: "Ошибка сохранения",
+    employeeUpdated: "Сотрудник обновлен",
+    saving: "Сохранение...",
+    pinCode: "PIN-код",
+    argo: "Арго",
+    bukovaya: "Буковая",
 
     addEmployee:
       "Добавить сотрудника",
@@ -54,6 +63,15 @@ export const translations = {
     cancel: "Скасувати",
     delete: "Видалити",
     edit: "Редагувати",
+    editEmployee: "Редагування співробітника",
+    replacePhoto: "Замінити фото",
+    photoUploadError: "Помилка завантаження фото",
+    saveError: "Помилка збереження",
+    employeeUpdated: "Співробітника оновлено",
+    saving: "Збереження...",
+    pinCode: "PIN-код",
+    argo: "Арго",
+    bukovaya: "Букова",
 
     addEmployee:
       "Додати співробітника",
@@ -91,6 +109,15 @@ export const translations = {
     cancel: "Cancel",
     delete: "Delete",
     edit: "Edit",
+    editEmployee: "Edit employee",
+    replacePhoto: "Replace photo",
+    photoUploadError: "Photo upload error",
+    saveError: "Save error",
+    employeeUpdated: "Employee updated",
+    saving: "Saving...",
+    pinCode: "PIN code",
+    argo: "Argo",
+    bukovaya: "Bukovaya",
 
     addEmployee:
       "Add employee",
