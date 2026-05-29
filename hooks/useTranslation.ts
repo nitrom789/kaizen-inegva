@@ -7,7 +7,21 @@ import { translations } from "@/lib/translations";
 export function useTranslation() {
 
   const [language, setLanguage] =
-    useState("ru");
+  useState(() => {
+
+    if (
+      typeof window ===
+      "undefined"
+    ) {
+      return "ru";
+    }
+
+    return (
+      localStorage.getItem(
+        "language"
+      ) || "ru"
+    );
+  });
 
   useEffect(() => {
 
