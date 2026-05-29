@@ -7,21 +7,21 @@ import { translations } from "@/lib/translations";
 export function useTranslation() {
 
   const [language, setLanguage] =
-  useState(() => {
+    useState(() => {
 
-    if (
-      typeof window ===
-      "undefined"
-    ) {
-      return "ru";
-    }
+      if (
+        typeof window ===
+        "undefined"
+      ) {
+        return "ru";
+      }
 
-    return (
-      localStorage.getItem(
-        "language"
-      ) || "ru"
-    );
-  });
+      return (
+        localStorage.getItem(
+          "language"
+        ) || "ru"
+      );
+    });
 
   useEffect(() => {
 
@@ -38,8 +38,6 @@ export function useTranslation() {
         );
       };
 
-    updateLanguage();
-
     window.addEventListener(
       "languageChanged",
       updateLanguage
@@ -55,6 +53,26 @@ export function useTranslation() {
 
   }, []);
 
+  const changeLanguage = (
+    newLanguage: string
+  ) => {
+
+    localStorage.setItem(
+      "language",
+      newLanguage
+    );
+
+    setLanguage(
+      newLanguage
+    );
+
+    window.dispatchEvent(
+      new Event(
+        "languageChanged"
+      )
+    );
+  };
+
   const t =
     translations[
       language as keyof typeof translations
@@ -62,6 +80,8 @@ export function useTranslation() {
 
   return {
     language,
+    setLanguage:
+      changeLanguage,
     t,
   };
 }
