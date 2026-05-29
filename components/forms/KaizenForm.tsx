@@ -108,7 +108,7 @@ const categories = [
       !description
     ) {
       toast.error(
-        "Заполните все поля"
+        t.fillAllFields
       );
 
       return;
@@ -124,7 +124,7 @@ const categories = [
     if (!selectedEmployee) {
 
       toast.error(
-        "Сотрудник не найден"
+        t.employeeNotFoundError
       );
 
       return;
@@ -154,14 +154,14 @@ const categories = [
       console.error(error);
 
       toast.error(
-        "Ошибка при отправке"
+        t.submitError
       );
 
       return;
     }
 
     toast.success(
-      "Предложение успешно отправлено"
+      t.suggestionSent
     );
 
     setEmployeeId("");
@@ -175,11 +175,11 @@ const categories = [
       <div className="text-center space-y-2">
 
         <h1 className="text-2xl font-bold text-gray-900">
-          Давайте делать производство лучше
+          {t.makeProductionBetter}
         </h1>
 
         <p className="text-gray-500 text-sm">
-          Подайте предложение по улучшению
+          {t.submitImprovement}
         </p>
 
       </div>
@@ -188,7 +188,7 @@ const categories = [
       <div className="space-y-2">
 
         <label className="text-sm font-medium">
-          Сотрудник
+          {t.employee}
         </label>
 
         <Popover>
@@ -208,7 +208,7 @@ const categories = [
                         item.id.toString() ===
                         employeeId
                     )?.full_name
-                  : "Выберите сотрудника"}
+                  : t.selectEmployee}
 
               </span>
 
@@ -221,11 +221,11 @@ const categories = [
             <Command>
 
               <CommandInput
-                placeholder="Введите фамилию..."
+                placeholder={t.enterSurname}
               />
 
               <CommandEmpty>
-                Сотрудник не найден
+                {t.employeeNotFound}
               </CommandEmpty>
 
               <CommandGroup className="max-h-64 overflow-y-auto">
@@ -304,7 +304,7 @@ const categories = [
       <div className="space-y-2">
 
         <label className="text-sm font-medium">
-          Описание улучшения
+          {t.improvementDescription}
         </label>
 
         <textarea
@@ -324,7 +324,7 @@ const categories = [
         onClick={handleSubmit}
         className="w-full h-12 rounded-xl text-base"
       >
-        Отправить предложение
+        {t.submitImprovementButton}
       </Button>
 
     </Card>

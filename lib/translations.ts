@@ -41,7 +41,34 @@ export const translations = {
     statusRejected: "Отклонено",
     category: "Категория улучшения",
     selectCategory: "Выберите категорию",
+    makeProductionBetter:
+      "Давайте делать производство лучше",
 
+    submitImprovement:
+      "Подайте предложение по улучшению",
+
+    selectEmployee:
+      "Выберите сотрудника",
+
+    enterSurname:
+      "Введите фамилию...",
+
+    employeeNotFound:
+      "Сотрудник не найден",
+
+    improvementDescription:
+      "Описание улучшения",
+
+    describeImprovement:
+      "Опишите ваше предложение...",
+
+    submitImprovementButton:
+      "Отправить предложение",
+
+    fillAllFields: "Заполните все поля",
+    employeeNotFoundError: "Сотрудник не найден",
+    submitError: "Ошибка при отправке",
+    suggestionSent: "Предложение успешно отправлено",
     categorySafety: "Безопасность",
     categoryQuality: "Качество",
     categorySpeed: "Скорость",
@@ -125,6 +152,33 @@ export const translations = {
     statusRejected: "Відхилено",
     category: "Категорія покращення",
     selectCategory: "Оберіть категорію",
+    makeProductionBetter:
+      "Давайте робити виробництво кращим",
+
+    submitImprovement:
+      "Подайте пропозицію щодо покращення",
+
+    selectEmployee:
+      "Оберіть співробітника",
+
+    enterSurname:
+      "Введіть прізвище...",
+
+    employeeNotFound:
+      "Співробітника не знайдено",
+
+    improvementDescription:
+      "Опис покращення",
+
+    describeImprovement:
+      "Опишіть вашу пропозицію...",
+
+    submitImprovementButton:
+      "Надіслати пропозицію",
+    fillAllFields: "Заповніть усі поля",
+    employeeNotFoundError: "Співробітника не знайдено",
+    submitError: "Помилка під час надсилання",
+    suggestionSent: "Пропозицію успішно надіслано",
 
     categorySafety: "Безпека",
     categoryQuality: "Якість",
@@ -209,6 +263,33 @@ export const translations = {
     statusRejected: "Rejected",
     category: "Improvement category",
     selectCategory: "Select category",
+    makeProductionBetter:
+      "Let's make production better",
+
+    submitImprovement:
+      "Submit an improvement suggestion",
+
+    selectEmployee:
+      "Select employee",
+
+    enterSurname:
+      "Enter surname...",
+
+    employeeNotFound:
+      "Employee not found",
+
+    improvementDescription:
+      "Improvement description",
+
+    describeImprovement:
+      "Describe your suggestion...",
+
+    submitImprovementButton:
+      "Submit suggestion",
+    fillAllFields: "Fill in all fields",
+    employeeNotFoundError: "Employee not found",
+    submitError: "Error while submitting",
+    suggestionSent: "Suggestion submitted successfully",
 
     categorySafety: "Safety",
     categoryQuality: "Quality",
