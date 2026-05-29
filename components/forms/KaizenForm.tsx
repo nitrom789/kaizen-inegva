@@ -315,7 +315,7 @@ const categories = [
             )
           }
           className="w-full rounded-xl border px-4 py-3 min-h-[160px] resize-none"
-          placeholder="Опишите ваше предложение..."
+          placeholder={t.describeImprovement}
         />
 
       </div>
