@@ -13,19 +13,18 @@ import {
 
 import { supabase } from "@/lib/supabase";
 
-import { translations } from "@/lib/translations";
+import { useTranslation }
+  from "@/hooks/useTranslation";
 
 export function Header() {
 
   const pathname = usePathname();
 
-  const [language, setLanguage] =
-    useState("ru");
-
-  const t =
-    translations[
-      language as keyof typeof translations
-    ];
+  const {
+  language,
+  setLanguage,
+  t,
+} = useTranslation();
 
   const [userEmail, setUserEmail] =
     useState("");
@@ -88,30 +87,9 @@ export function Header() {
         },
       ];
 
-  useEffect(() => {
+  
 
-    const savedLanguage =
-      localStorage.getItem(
-        "language"
-      );
-
-    if (savedLanguage) {
-
-      setLanguage(
-        savedLanguage
-      );
-    }
-
-  }, []);
-
-  useEffect(() => {
-
-    localStorage.setItem(
-      "language",
-      language
-    );
-
-  }, [language]);
+  
 
   const checkUser = async () => {
 
@@ -238,21 +216,9 @@ export function Header() {
 
               <button
                 type="button"
-                onClick={() => {
-
-  localStorage.setItem(
-    "language",
-    "ru"
-  );
-
-  setLanguage("ru");
-
-  window.dispatchEvent(
-    new Event(
-      "languageChanged"
-    )
-  );
-}}
+                onClick={() =>
+                  setLanguage("ru")
+}
                 className={`px-2 py-1 rounded-lg text-xs transition ${
                   language === "ru"
                     ? "bg-white text-blue-600"
@@ -266,21 +232,9 @@ export function Header() {
 
               <button
                 type="button"
-                onClick={() => {
-
-  localStorage.setItem(
-    "language",
-    "ua"
-  );
-
-  setLanguage("ua");
-
-  window.dispatchEvent(
-    new Event(
-      "languageChanged"
-    )
-  );
-}}
+                onClick={() =>
+                  setLanguage("ua")
+                }
                 className={`px-2 py-1 rounded-lg text-xs transition ${
                   language === "ua"
                     ? "bg-white text-blue-600"
@@ -294,21 +248,9 @@ export function Header() {
 
               <button
                 type="button"
-                onClick={() => {
-
-  localStorage.setItem(
-    "language",
-    "en"
-  );
-
-  setLanguage("en");
-
-  window.dispatchEvent(
-    new Event(
-      "languageChanged"
-    )
-  );
-}}
+                onClick={() =>
+                  setLanguage("en")
+                }
                 className={`px-2 py-1 rounded-lg text-xs transition ${
                   language === "en"
                     ? "bg-white text-blue-600"
