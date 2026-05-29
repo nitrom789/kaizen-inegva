@@ -26,9 +26,30 @@ export const translations = {
     pinCode: "PIN-код",
     argo: "Арго",
     bukovaya: "Буковая",
+    addEmployee: "Добавить сотрудника",
+    employeePhoto: "Фото сотрудника",
+    enterFullName: "Введите ФИО",
+    adding: "Добавление...",
 
-    addEmployee:
-      "Добавить сотрудника",
+    exportArgo: "Экспорт Арго",
+    exportBukovaya: "Экспорт Буковая",
+
+    searchEmployee: "Поиск сотрудника...",
+    allSites: "Все площадки",
+
+    employee: "Сотрудник",
+    photo: "Фото",
+    actions: "Действия",
+
+    deleteEmployeeConfirm: "Удалить сотрудника?",
+    deleteError: "Ошибка удаления",
+    employeeDeleted: "Сотрудник удален",
+
+    enterEmployeeName: "Введите имя сотрудника",
+    addError: "Ошибка при добавлении",
+    employeeAdded: "Сотрудник добавлен",
+
+   
 
     employeeList:
       "Список сотрудников",
@@ -72,9 +93,30 @@ export const translations = {
     pinCode: "PIN-код",
     argo: "Арго",
     bukovaya: "Букова",
+    addEmployee: "Додати співробітника",
+    employeePhoto: "Фото співробітника",
+    enterFullName: "Введіть ПІБ",
+    adding: "Додавання...",
 
-    addEmployee:
-      "Додати співробітника",
+    exportArgo: "Експорт Арго",
+    exportBukovaya: "Експорт Букова",
+
+    searchEmployee: "Пошук співробітника...",
+    allSites: "Усі майданчики",
+
+    employee: "Співробітник",
+    photo: "Фото",
+    actions: "Дії",
+
+    deleteEmployeeConfirm: "Видалити співробітника?",
+    deleteError: "Помилка видалення",
+    employeeDeleted: "Співробітника видалено",
+
+    enterEmployeeName: "Введіть ім'я співробітника",
+    addError: "Помилка під час додавання",
+    employeeAdded: "Співробітника додано",
+
+ 
 
     employeeList:
       "Список співробітників",
@@ -118,9 +160,31 @@ export const translations = {
     pinCode: "PIN code",
     argo: "Argo",
     bukovaya: "Bukovaya",
+    addEmployee: "Add employee",
+    employeePhoto: "Employee photo",
+    enterFullName: "Enter full name",
+    adding: "Adding...",
 
-    addEmployee:
-      "Add employee",
+    exportArgo: "Export Argo",
+    exportBukovaya: "Export Bukovaya",
+
+    searchEmployee: "Search employee...",
+    allSites: "All sites",
+
+    employee: "Employee",
+    photo: "Photo",
+    actions: "Actions",
+
+    deleteEmployeeConfirm: "Delete employee?",
+    deleteError: "Delete error",
+    employeeDeleted: "Employee deleted",
+
+    enterEmployeeName: "Enter employee name",
+    addError: "Error while adding employee",
+    employeeAdded: "Employee added",
+    
+
+    
 
     employeeList:
       "Employees",

@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+import { useTranslation } from "@/hooks/useTranslation";
+
 import * as XLSX from "xlsx";
 
 import { saveAs } from "file-saver";
@@ -24,6 +26,8 @@ type Employee = {
 };
 
 export function EmployeeForm() {
+
+  const { t } = useTranslation();
 
   const [fullName, setFullName] =
     useState("");
@@ -184,7 +188,7 @@ export function EmployeeForm() {
 
       const confirmed =
         confirm(
-          "Удалить сотрудника?"
+          t.deleteEmployeeConfirm
         );
 
       if (!confirmed) {
@@ -202,14 +206,14 @@ export function EmployeeForm() {
         console.error(error);
 
         toast.error(
-          "Ошибка удаления"
+          t.deleteError
         );
 
         return;
       }
 
       toast.success(
-        "Сотрудник удален"
+        t.employeeDeleted
       );
 
       fetchEmployees();
@@ -220,7 +224,7 @@ export function EmployeeForm() {
     if (!fullName.trim()) {
 
       toast.error(
-        "Введите имя сотрудника"
+        t.enterEmployeeName
       );
 
       return;
@@ -303,14 +307,14 @@ export function EmployeeForm() {
       console.error(error);
 
       toast.error(
-        "Ошибка при добавлении"
+        t.addError
       );
 
       return;
     }
 
     toast.success(
-      `Сотрудник добавлен. PIN: ${pinCode}`
+      `${t.employeeAdded}. PIN: ${pinCode}`
     );
 
     setFullName("");
@@ -351,7 +355,7 @@ export function EmployeeForm() {
 
           <h2 className="text-xl font-semibold">
 
-            Добавить сотрудника
+            {t.addEmployee}
 
           </h2>
 
@@ -361,7 +365,7 @@ export function EmployeeForm() {
 
               <label className="text-sm font-medium">
 
-                ФИО
+                {t.fullName}
 
               </label>
 
@@ -372,7 +376,7 @@ export function EmployeeForm() {
                     e.target.value
                   )
                 }
-                placeholder="Введите ФИО"
+                placeholder={t.enterFullName}
                 className="w-full h-11 rounded-xl border px-4"
               />
 
@@ -382,7 +386,7 @@ export function EmployeeForm() {
 
               <label className="text-sm font-medium">
 
-                Площадка
+                {t.site}
 
               </label>
 
@@ -397,11 +401,11 @@ export function EmployeeForm() {
               >
 
                 <option value="1">
-                  Арго
+                  {t.argo}
                 </option>
 
                 <option value="2">
-                  Буковая
+                  {t.bukovaya}
                 </option>
 
               </select>
@@ -414,7 +418,7 @@ export function EmployeeForm() {
 
             <label className="text-sm font-medium">
 
-              Фото сотрудника
+              {t.employeePhoto}
 
             </label>
 
@@ -468,8 +472,8 @@ export function EmployeeForm() {
           >
 
             {loading
-              ? "Добавление..."
-              : "Добавить сотрудника"}
+              ? t.adding
+              : t.addEmployee}
 
           </Button>
 
@@ -479,7 +483,7 @@ export function EmployeeForm() {
 
           <h2 className="text-xl font-semibold">
 
-            Экспорт PIN-кодов
+            {t.exportPins}
 
           </h2>
 
@@ -495,7 +499,7 @@ export function EmployeeForm() {
               className="h-11 px-6 rounded-xl bg-blue-600 text-white font-medium"
             >
 
-              Экспорт Арго
+              {t.exportArgo}
 
             </button>
 
@@ -509,7 +513,7 @@ export function EmployeeForm() {
               className="h-11 px-6 rounded-xl bg-green-600 text-white font-medium"
             >
 
-              Экспорт Буковая
+              {t.exportBukovaya}
 
             </button>
 
@@ -525,7 +529,7 @@ export function EmployeeForm() {
 
           <h2 className="text-xl font-semibold">
 
-            Список сотрудников
+            {t.employeeList}
 
           </h2>
 
@@ -533,7 +537,7 @@ export function EmployeeForm() {
 
             <input
               type="text"
-              placeholder="Поиск сотрудника..."
+              placeholder={t.searchEmployee}
               value={search}
               onChange={(e) =>
                 setSearch(
@@ -554,15 +558,15 @@ export function EmployeeForm() {
             >
 
               <option value="all">
-                Все площадки
+                {t.allSites}
               </option>
 
               <option value="1">
-                Арго
+                {t.argo}
               </option>
 
               <option value="2">
-                Буковая
+                {t.bukovaya}
               </option>
 
             </select>
@@ -633,7 +637,7 @@ export function EmployeeForm() {
     className="h-8 px-3 rounded-lg bg-blue-600 text-white text-xs font-medium"
   >
 
-    Изменить
+    {t.edit}
 
   </button>
 
@@ -644,7 +648,7 @@ export function EmployeeForm() {
     className="h-8 px-3 rounded-lg bg-red-600 text-white text-xs font-medium"
   >
 
-    Удалить
+    {t.delete}
 
   </button>
 
@@ -669,15 +673,15 @@ export function EmployeeForm() {
               <tr className="text-left">
 
                 <th className="px-5 py-4 text-sm font-semibold">
-                  Фото
+                  {t.photo}
                 </th>
 
                 <th className="px-5 py-4 text-sm font-semibold">
-                  Сотрудник
+                  {t.employee}
                 </th>
 
                 <th className="px-5 py-4 text-sm font-semibold">
-                  Площадка
+                  {t.site}
                 </th>
 
                 <th className="px-5 py-4 text-sm font-semibold">
@@ -685,7 +689,7 @@ export function EmployeeForm() {
                 </th>
 
                 <th className="px-5 py-4 text-sm font-semibold text-right">
-                  Действия
+                  {t.actions}
                 </th>
 
               </tr>
@@ -754,7 +758,7 @@ export function EmployeeForm() {
       className="h-9 px-4 rounded-xl bg-blue-600 text-white text-sm font-medium"
     >
 
-      Редактировать
+      {t.edit}
 
     </button>
 
@@ -765,7 +769,7 @@ export function EmployeeForm() {
       className="h-9 px-4 rounded-xl bg-red-600 text-white text-sm font-medium"
     >
 
-      Удалить
+      {t.delete}
 
     </button>
 
