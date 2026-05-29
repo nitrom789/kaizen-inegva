@@ -238,9 +238,21 @@ export function Header() {
 
               <button
                 type="button"
-                onClick={() =>
-                  setLanguage("ru")
-                }
+                onClick={() => {
+
+  localStorage.setItem(
+    "language",
+    "ru"
+  );
+
+  setLanguage("ru");
+
+  window.dispatchEvent(
+    new Event(
+      "languageChanged"
+    )
+  );
+}}
                 className={`px-2 py-1 rounded-lg text-xs transition ${
                   language === "ru"
                     ? "bg-white text-blue-600"
@@ -254,9 +266,21 @@ export function Header() {
 
               <button
                 type="button"
-                onClick={() =>
-                  setLanguage("ua")
-                }
+                onClick={() => {
+
+  localStorage.setItem(
+    "language",
+    "ua"
+  );
+
+  setLanguage("ua");
+
+  window.dispatchEvent(
+    new Event(
+      "languageChanged"
+    )
+  );
+}}
                 className={`px-2 py-1 rounded-lg text-xs transition ${
                   language === "ua"
                     ? "bg-white text-blue-600"
@@ -270,9 +294,21 @@ export function Header() {
 
               <button
                 type="button"
-                onClick={() =>
-                  setLanguage("en")
-                }
+                onClick={() => {
+
+  localStorage.setItem(
+    "language",
+    "en"
+  );
+
+  setLanguage("en");
+
+  window.dispatchEvent(
+    new Event(
+      "languageChanged"
+    )
+  );
+}}
                 className={`px-2 py-1 rounded-lg text-xs transition ${
                   language === "en"
                     ? "bg-white text-blue-600"

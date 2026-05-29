@@ -6,22 +6,35 @@ import { translations } from "@/lib/translations";
 
 export function useTranslation() {
 
+  const getLanguage = () =>
+    localStorage.getItem("language") ||
+    "ru";
+
   const [language, setLanguage] =
-    useState("ru");
+    useState(getLanguage);
 
   useEffect(() => {
 
-    const savedLanguage =
-      localStorage.getItem(
-        "language"
-      );
+    const handleLanguageChange =
+      () => {
 
-    if (savedLanguage) {
+        setLanguage(
+          getLanguage()
+        );
+      };
 
-      setLanguage(
-        savedLanguage
+    window.addEventListener(
+      "languageChanged",
+      handleLanguageChange
+    );
+
+    return () => {
+
+      window.removeEventListener(
+        "languageChanged",
+        handleLanguageChange
       );
-    }
+    };
 
   }, []);
 
