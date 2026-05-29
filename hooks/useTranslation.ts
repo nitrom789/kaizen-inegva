@@ -6,33 +6,36 @@ import { translations } from "@/lib/translations";
 
 export function useTranslation() {
 
-  const getLanguage = () =>
-    localStorage.getItem("language") ||
-    "ru";
-
   const [language, setLanguage] =
-    useState(getLanguage);
+    useState("ru");
 
   useEffect(() => {
 
-    const handleLanguageChange =
+    const updateLanguage =
       () => {
 
+        const savedLanguage =
+          localStorage.getItem(
+            "language"
+          ) || "ru";
+
         setLanguage(
-          getLanguage()
+          savedLanguage
         );
       };
 
+    updateLanguage();
+
     window.addEventListener(
       "languageChanged",
-      handleLanguageChange
+      updateLanguage
     );
 
     return () => {
 
       window.removeEventListener(
         "languageChanged",
-        handleLanguageChange
+        updateLanguage
       );
     };
 
