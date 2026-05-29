@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslation }
+  from "@/hooks/useTranslation"
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -47,6 +49,30 @@ export function KaizenForm({
 
   const [description, setDescription] =
     useState("");
+    const { t } = useTranslation();
+
+const categories = [
+  {
+    db: "Безопасность",
+    text: t.categorySafety,
+  },
+  {
+    db: "Качество",
+    text: t.categoryQuality,
+  },
+  {
+    db: "Скорость",
+    text: t.categorySpeed,
+  },
+  {
+    db: "Экономия",
+    text: t.categorySavings,
+  },
+  {
+    db: "Удобство",
+    text: t.categoryConvenience,
+  },
+];
 
   useEffect(() => {
     fetchEmployees();
@@ -240,7 +266,7 @@ export function KaizenForm({
       <div className="space-y-2">
 
         <label className="text-sm font-medium">
-          Категория улучшения
+          {t.category}
         </label>
 
         <select
@@ -254,28 +280,21 @@ export function KaizenForm({
         >
 
           <option value="">
-            Выберите категорию
-          </option>
+  {t.selectCategory}
+</option>
 
-          <option>
-            Безопасность
-          </option>
+{categories.map(
+  (item) => (
 
-          <option>
-            Качество
-          </option>
+    <option
+      key={item.db}
+      value={item.db}
+    >
+      {item.text}
+    </option>
 
-          <option>
-            Скорость
-          </option>
-
-          <option>
-            Экономия
-          </option>
-
-          <option>
-            Удобство
-          </option>
+  )
+)}
 
         </select>
 
