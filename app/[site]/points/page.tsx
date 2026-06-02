@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Header } from "@/components/layout/Header";
 import { supabase } from "@/lib/supabase";
+import { useTranslation } from "@/hooks/useTranslation";
 
 type Employee = {
   id: number;
@@ -27,6 +28,9 @@ export default function PointsPage() {
 
   const site =
     params.site as string;
+
+  const { t } =
+    useTranslation();
 
   const [employees, setEmployees] =
     useState<Employee[]>([]);
@@ -138,17 +142,17 @@ export default function PointsPage() {
         <div className="bg-white rounded-3xl shadow-xl p-6">
 
           <h1 className="text-3xl font-bold mb-2">
-            Таблица баллов
+            {t.pointsTable}
           </h1>
 
           <p className="text-gray-500">
 
-            Площадка:
+            {t.siteLabel}:
             {" "}
 
             {site === "argo"
-              ? "Арго"
-              : "Буковая"}
+              ? t.siteArgo
+              : t.siteBukovaya}
 
           </p>
 
@@ -159,12 +163,12 @@ export default function PointsPage() {
         <div className="bg-white rounded-3xl shadow-xl p-6 space-y-4">
 
           <h2 className="text-xl font-semibold">
-            Личный кабинет
+            {t.personalAccount}
           </h2>
 
           <input
             type="password"
-            placeholder="Введите PIN"
+            placeholder={t.enterPin}
             value={pinCode}
             onChange={(e) =>
               setPinCode(
@@ -181,7 +185,7 @@ export default function PointsPage() {
             className="w-full h-12 rounded-xl bg-blue-600 text-white font-medium"
           >
 
-            Открыть кабинет
+            {t.openAccount}
 
           </button>
 

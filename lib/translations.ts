@@ -108,6 +108,13 @@ export const translations = {
 
     uploadPhoto:
       "Выбрать фото",
+    pointsTable: "Таблица баллов",
+    siteLabel: "Площадка",
+    personalAccount: "Личный кабинет",
+    enterPin: "Введите PIN",
+    openAccount: "Открыть кабинет",
+    siteArgo: "Арго",
+    siteBukovaya: "Буковая",
 
   },
 
@@ -219,6 +226,13 @@ export const translations = {
 
     uploadPhoto:
       "Обрати фото",
+    pointsTable: "Таблиця балів",
+    siteLabel: "Майданчик",
+    personalAccount: "Особистий кабінет",
+    enterPin: "Введіть PIN",
+    openAccount: "Відкрити кабінет",
+    siteArgo: "Арго",
+    siteBukovaya: "Букова",
 
   },
 
@@ -332,6 +346,13 @@ export const translations = {
 
     uploadPhoto:
       "Choose photo",
+    pointsTable: "Points table",
+    siteLabel: "Site",
+    personalAccount: "Personal account",
+    enterPin: "Enter PIN",
+    openAccount: "Open account",
+    siteArgo: "Argo",
+    siteBukovaya: "Bukovaya",
 
   },
 
