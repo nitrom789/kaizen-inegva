@@ -190,23 +190,41 @@ export function Header() {
 
           {!isAdminPage && (
 
-            <div className="md:hidden">
+            <div className="md:hidden flex items-center gap-2">
 
-              <button
-                type="button"
-                onClick={() =>
-                  setMobileMenuOpen(
-                    !mobileMenuOpen
-                  )
-                }
-                className="text-white border border-white/30 px-4 py-2 rounded-xl text-sm"
-              >
+  <button
+    type="button"
+    onClick={() =>
+      setMobileMenuOpen(
+        !mobileMenuOpen
+      )
+    }
+    className="text-white border border-white/30 px-4 py-2 rounded-xl text-sm"
+  >
+    {t.menu}
+  </button>
 
-                {t.menu}
+  <button
+    type="button"
+    onClick={() => {
 
-              </button>
+      const nextLanguage =
+        language === "ru"
+          ? "ua"
+          : language === "ua"
+          ? "en"
+          : "ru";
 
-            </div>
+      setLanguage(
+        nextLanguage
+      );
+    }}
+    className="text-white border border-white/30 px-3 py-2 rounded-xl text-sm font-semibold min-w-[52px]"
+  >
+    {language.toUpperCase()}
+  </button>
+
+</div>
 
           )}
 

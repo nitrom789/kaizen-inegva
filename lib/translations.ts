@@ -1,7 +1,6 @@
 export const translations = {
 
-  ru: {
-
+  ru: {    
     login: "Войти",
     logout: "Выйти",
 
