@@ -1,4 +1,10 @@
+"use client";
+
 import { EmployeeAvatar } from "@/components/ui/EmployeeAvatar";
+
+import { useTranslation } from "@/hooks/useTranslation";
+
+import { categoryTranslations } from "@/lib/categoryTranslations";
 
 type ImprovementCardProps = {
   title: string;
@@ -17,6 +23,16 @@ export function ImprovementCard({
   photoUrl,
   rejectReason,
 }: ImprovementCardProps) {
+
+  const { language, t } =
+    useTranslation();
+
+  const translatedCategory =
+    categoryTranslations[
+      language as keyof typeof categoryTranslations
+    ]?.[
+      category as keyof typeof categoryTranslations.ru
+    ] || category;
 
   return (
     <div className="bg-white rounded-3xl p-5 shadow-xl border border-gray-100">
@@ -38,7 +54,7 @@ export function ImprovementCard({
 
               <h3 className="font-bold text-gray-900 text-lg leading-tight">
 
-                {title}
+                {translatedCategory}
 
               </h3>
 
@@ -52,7 +68,7 @@ export function ImprovementCard({
 
             <span className="bg-blue-100 text-blue-700 text-xs px-3 py-1 rounded-full whitespace-nowrap h-fit">
 
-              {category}
+              {translatedCategory}
 
             </span>
 
@@ -74,7 +90,7 @@ export function ImprovementCard({
 
           <p className="text-sm font-semibold text-red-700">
 
-            Причина отклонения
+            {t.rejectReason}
 
           </p>
 
