@@ -51,6 +51,10 @@ export function KaizenForm({
 
   const [description, setDescription] =
     useState("");
+
+  const [open, setOpen] =
+  useState(false);
+
     const { t } = useTranslation();
   
   const getEmployeeName = (
@@ -220,7 +224,10 @@ const categories = [
           {t.employee}
         </label>
 
-        <Popover>
+        <Popover
+          open={open}
+          onOpenChange={setOpen}
+        >
 
           <PopoverTrigger asChild>
 
@@ -267,11 +274,15 @@ const categories = [
                           item
                         )
                       }
-                      onSelect={() =>
-                        setEmployeeId(
-                          item.id.toString()
-                        )
-                      }
+                      onSelect={() => {
+
+                      setEmployeeId(
+                        item.id.toString()
+                      );
+
+                    setOpen(false);
+
+                  }}
                     >
 
                       {getEmployeeName(
