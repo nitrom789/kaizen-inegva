@@ -11,9 +11,12 @@ export default async function RejectedPage() {
     .select(`
   *,
   employees (
-    full_name,
-    photo_url
-  )
+  full_name_ru,
+  full_name_ua,
+  full_name_en,
+  photo_url
+)
+  
 `)
     .eq("status", "Отклонено")
     .order("created_at", { ascending: false });
@@ -33,13 +36,21 @@ export default async function RejectedPage() {
 
           {improvements?.map((item) => (
             <ImprovementCard
-              key={item.id}
-              title={item.category}
-              category={item.category}
-              employee={item.employees?.full_name}
-              description={item.description}
-              rejectReason={item.reject_reason}
-            />
+  key={item.id}
+  photoUrl={item.employees?.photo_url}
+  title={item.category}
+  category={item.category}
+  employeeRu={
+    item.employees?.full_name_ru || ""
+  }
+  employeeUa={
+    item.employees?.full_name_ua || ""
+  }
+  employeeEn={
+    item.employees?.full_name_en || ""
+  }
+  description={item.description}
+/>
           ))}
 
         </div>
