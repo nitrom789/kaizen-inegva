@@ -26,7 +26,9 @@ import { toast } from "sonner";
 
 type Employee = {
   id: number;
-  full_name: string;
+  full_name_ru: string;
+  full_name_ua: string;
+  full_name_en: string;
   site_id: number;
 };
 
@@ -50,6 +52,26 @@ export function KaizenForm({
   const [description, setDescription] =
     useState("");
     const { t } = useTranslation();
+  
+  const getEmployeeName = (
+  employee: Employee
+) => {
+
+  const language =
+    localStorage.getItem(
+      "language"
+    ) || "ru";
+
+  if (language === "ua") {
+    return employee.full_name_ua;
+  }
+
+  if (language === "en") {
+    return employee.full_name_en;
+  }
+
+  return employee.full_name_ru;
+};
 
 const categories = [
   {
@@ -83,7 +105,7 @@ const categories = [
     let query = supabase
       .from("employees")
       .select("*")
-      .order("full_name");
+      .order("full_name_ua");
 
     if (siteId) {
       query = query.eq("site_id", siteId);
@@ -99,6 +121,13 @@ const categories = [
 
     setEmployees(data || []);
   };
+
+  const selectedEmployee =
+  employees.find(
+    (item) =>
+      item.id.toString() ===
+      employeeId
+  );
 
   const handleSubmit = async () => {
 
@@ -202,15 +231,13 @@ const categories = [
 
               <span className="truncate">
 
-                {employeeId
-                  ? employees.find(
-                      (item) =>
-                        item.id.toString() ===
-                        employeeId
-                    )?.full_name
-                  : t.selectEmployee}
+  {selectedEmployee
+    ? getEmployeeName(
+        selectedEmployee
+      )
+    : t.selectEmployee}
 
-              </span>
+</span>
 
             </button>
 
@@ -236,7 +263,9 @@ const categories = [
                     <CommandItem
                       key={item.id}
                       value={
-                        item.full_name
+                       getEmployeeName(
+                          item
+                        )
                       }
                       onSelect={() =>
                         setEmployeeId(
@@ -245,7 +274,9 @@ const categories = [
                       }
                     >
 
-                      {item.full_name}
+                      {getEmployeeName(
+  item
+)}
 
                     </CommandItem>
 
