@@ -434,34 +434,71 @@ const matchesSearch =
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-            <div className="space-y-2">
+<div className="space-y-2">
 
-              <label className="text-sm font-medium">
+  <label className="text-sm font-medium">
 
-                {t.fullName}
+    ФИО (RU)
 
-              </label>
+  </label>
 
-              <input
-                value={fullNameUa}
-                onChange={(e) => {
+  <input
+    value={fullNameRu}
+    onChange={(e) =>
+      setFullNameRu(
+        e.target.value
+      )
+    }
+    placeholder="Введите ФИО"
+    className="w-full h-11 rounded-xl border px-4"
+  />
 
-  const value =
-    e.target.value;
+</div>
 
-  setFullNameUa(value);
+<div className="space-y-2">
 
-  setFullNameEn(
-    transliterateUaToEn(
-      value
-    )
-  );
-}}
-                placeholder={t.enterFullName}
-                className="w-full h-11 rounded-xl border px-4"
-              />
+  <label className="text-sm font-medium">
 
-            </div>
+    ПІБ (UA)
+
+  </label>
+
+  <input
+    value={fullNameUa}
+    onChange={(e) => {
+
+      const value =
+        e.target.value;
+
+      setFullNameUa(value);
+
+      setFullNameEn(
+        transliterateUaToEn(
+          value
+        )
+      );
+    }}
+    placeholder="Введіть ПІБ"
+    className="w-full h-11 rounded-xl border px-4"
+  />
+
+</div>
+
+<div className="space-y-2">
+
+  <label className="text-sm font-medium">
+
+    Full Name (EN)
+
+  </label>
+
+  <input
+    value={fullNameEn}
+    readOnly
+    className="w-full h-11 rounded-xl border px-4 bg-gray-100"
+  />
+
+</div>
 
             <div className="space-y-2">
 
