@@ -12,7 +12,9 @@ import { useTranslation } from "@/hooks/useTranslation";
 
 type Employee = {
   id: number;
-  full_name: string;
+  full_name_ru: string;
+  full_name_ua: string;
+  full_name_en: string;
   pin_code: string;
   site_id: number;
   photo_url?: string;
@@ -62,7 +64,7 @@ export function EditEmployeeDialog({
     }
 
     setFullName(
-      employee.full_name
+      employee.full_name_ua
     );
 
     setPinCode(

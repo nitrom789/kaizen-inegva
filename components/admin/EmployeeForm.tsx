@@ -19,7 +19,9 @@ import { EditEmployeeDialog } from "@/components/dialogs/EditEmployeeDialog";
 
 type Employee = {
   id: number;
-  full_name: string;
+  full_name_ru: string;
+  full_name_ua: string;
+  full_name_en: string;
   pin_code: string;
   site_id: number;
   photo_url?: string;
@@ -29,8 +31,14 @@ export function EmployeeForm() {
 
   const { t } = useTranslation();
 
-  const [fullName, setFullName] =
-    useState("");
+  const [fullNameRu, setFullNameRu] =
+  useState("");
+
+const [fullNameUa, setFullNameUa] =
+  useState("");
+
+const [fullNameEn, setFullNameEn] =
+  useState("");
 
   const [photoFile, setPhotoFile] =
     useState<File | null>(null);
@@ -129,7 +137,7 @@ export function EmployeeForm() {
         "site_id",
         siteId
       )
-      .order("full_name");
+      .order("full_name_ua");
 
     if (!employeesData) {
       return;
@@ -139,7 +147,7 @@ export function EmployeeForm() {
       employeesData.map(
         (item: Employee) => ({
           "ФИО":
-            item.full_name,
+            item.full_name_ua,
 
           "PIN-код":
             item.pin_code,
@@ -218,10 +226,62 @@ export function EmployeeForm() {
 
       fetchEmployees();
     };
+    const transliterateUaToEn = (
+  text: string
+) => {
 
+  const map: Record<string, string> = {
+    А: "A", а: "a",
+    Б: "B", б: "b",
+    В: "V", в: "v",
+    Г: "H", г: "h",
+    Ґ: "G", ґ: "g",
+    Д: "D", д: "d",
+    Е: "E", е: "e",
+    Є: "Ye", є: "ie",
+    Ж: "Zh", ж: "zh",
+    З: "Z", з: "z",
+    И: "Y", и: "y",
+    І: "I", і: "i",
+    Ї: "Yi", ї: "i",
+    Й: "Y", й: "i",
+    К: "K", к: "k",
+    Л: "L", л: "l",
+    М: "M", м: "m",
+    Н: "N", н: "n",
+    О: "O", о: "o",
+    П: "P", п: "p",
+    Р: "R", р: "r",
+    С: "S", с: "s",
+    Т: "T", т: "t",
+    У: "U", у: "u",
+    Ф: "F", ф: "f",
+    Х: "Kh", х: "kh",
+    Ц: "Ts", ц: "ts",
+    Ч: "Ch", ч: "ch",
+    Ш: "Sh", ш: "sh",
+    Щ: "Shch", щ: "shch",
+    Ю: "Yu", ю: "iu",
+    Я: "Ya", я: "ia",
+    Ь: "", ь: "",
+    "'": "",
+    "’": "",
+  };
+
+  return text
+    .split("")
+    .map(
+      (char) =>
+        map[char] ?? char
+    )
+    .join("");
+};
   const handleSubmit = async () => {
 
-    if (!fullName.trim()) {
+    if (
+  !fullNameRu.trim() ||
+  !fullNameUa.trim()
+) {
 
       toast.error(
         t.enterEmployeeName
@@ -286,18 +346,24 @@ export function EmployeeForm() {
         .from("employees")
         .insert([
           {
-            full_name:
-              fullName.trim(),
+  full_name_ru:
+    fullNameRu.trim(),
 
-            photo_url:
-              uploadedPhotoUrl,
+  full_name_ua:
+    fullNameUa.trim(),
 
-            site_id:
-              Number(siteId),
+  full_name_en:
+    fullNameEn.trim(),
 
-            pin_code:
-              pinCode,
-          },
+  photo_url:
+    uploadedPhotoUrl,
+
+  site_id:
+    Number(siteId),
+
+  pin_code:
+    pinCode,
+}
         ]);
 
     setLoading(false);
@@ -317,7 +383,9 @@ export function EmployeeForm() {
       `${t.employeeAdded}. PIN: ${pinCode}`
     );
 
-    setFullName("");
+    setFullNameRu("");
+    setFullNameUa("");
+    setFullNameEn("");
     setPhotoFile(null);
     setSiteId("1");
 
@@ -328,7 +396,7 @@ export function EmployeeForm() {
     employees.filter((item) => {
 
       const matchesSearch =
-        item.full_name
+        item.full_name_ua
           .toLowerCase()
           .includes(
             search.toLowerCase()
@@ -370,12 +438,20 @@ export function EmployeeForm() {
               </label>
 
               <input
-                value={fullName}
-                onChange={(e) =>
-                  setFullName(
-                    e.target.value
-                  )
-                }
+                value={fullNameUa}
+                onChange={(e) => {
+
+  const value =
+    e.target.value;
+
+  setFullNameUa(value);
+
+  setFullNameEn(
+    transliterateUaToEn(
+      value
+    )
+  );
+}}
                 placeholder={t.enterFullName}
                 className="w-full h-11 rounded-xl border px-4"
               />
@@ -588,7 +664,7 @@ export function EmployeeForm() {
 
               <EmployeeAvatar
                 photoUrl={item.photo_url}
-                fullName={item.full_name}
+                fullName={item.full_name_ua}
                 width={56}
                 height={72}
               />
@@ -597,7 +673,7 @@ export function EmployeeForm() {
 
                 <h3 className="font-semibold text-sm leading-tight">
 
-                  {item.full_name}
+                  {item.full_name_ua}
 
                 </h3>
 
@@ -627,7 +703,7 @@ export function EmployeeForm() {
 
                 <div className="mt-3 flex gap-2">
 
-  <button
+                  <button
     onClick={() => {
 
       setSelectedEmployee(item);
@@ -709,7 +785,7 @@ export function EmployeeForm() {
 
                     <EmployeeAvatar
                       photoUrl={item.photo_url}
-                      fullName={item.full_name}
+                      fullName={item.full_name_ua}
                       width={44}
                       height={56}
                     />
@@ -720,7 +796,7 @@ export function EmployeeForm() {
 
                     <div className="font-medium">
 
-                      {item.full_name}
+                      {item.full_name_ua}
 
                     </div>
 
