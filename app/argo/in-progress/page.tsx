@@ -1,5 +1,4 @@
-export const dynamic =
-  "force-dynamic";
+export const dynamic = "force-dynamic";
 
 import { Header } from "@/components/layout/Header";
 import { ImprovementCard } from "@/components/cards/ImprovementCard";
@@ -13,7 +12,9 @@ export default async function ArgoInProgressPage() {
       .select(`
         *,
         employees (
-          full_name,
+          full_name_ru,
+          full_name_ua,
+          full_name_en,
           photo_url
         )
       `)
@@ -43,7 +44,15 @@ export default async function ArgoInProgressPage() {
               photoUrl={item.employees?.photo_url}
               title={item.category}
               category={item.category}
-              employee={item.employees?.full_name}
+              employeeRu={
+                item.employees?.full_name_ru || ""
+              }
+              employeeUa={
+                item.employees?.full_name_ua || ""
+              }
+              employeeEn={
+                item.employees?.full_name_en || ""
+              }
               description={item.description}
             />
 
