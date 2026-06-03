@@ -12,11 +12,9 @@ export default async function ImplementedPage() {
     .select(`
   *,
   employees (
-  full_name_ru,
-  full_name_ua,
-  full_name_en,
-  photo_url
-)
+    full_name,
+    photo_url
+  )
 `)
     .eq("status", "Внедрено")
     .order("created_at", { ascending: false });
@@ -37,19 +35,25 @@ export default async function ImplementedPage() {
           {improvements?.map((item) => (
            <ImprovementCard
   key={item.id}
-  photoUrl={item.employees?.photo_url}
   title={item.category}
   category={item.category}
+
   employeeRu={
     item.employees?.full_name_ru || ""
   }
+
   employeeUa={
     item.employees?.full_name_ua || ""
   }
+
   employeeEn={
     item.employees?.full_name_en || ""
   }
+
   description={item.description}
+  photoUrl={
+    item.employees?.photo_url
+  }
 />
           ))}
 
