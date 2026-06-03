@@ -12,7 +12,9 @@ export default async function ArgoNewPage() {
       .select(`
         *,
         employees (
-          full_name,
+          full_name_ru,
+          full_name_ua,
+          full_name_en,
           photo_url
         )
       `)
@@ -42,7 +44,12 @@ export default async function ArgoNewPage() {
               photoUrl={item.employees?.photo_url}
               title={item.category}
               category={item.category}
-              employee={item.employees?.full_name}
+              employee={
+                item.employees?.full_name_ua ||
+                item.employees?.full_name_ru ||
+                item.employees?.full_name_en ||
+                 ""
+              }
               description={item.description}
             />
 
