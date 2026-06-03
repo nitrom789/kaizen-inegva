@@ -37,25 +37,19 @@ export default async function ImplementedPage() {
           {improvements?.map((item) => (
            <ImprovementCard
   key={item.id}
+  photoUrl={item.employees?.photo_url}
   title={item.category}
   category={item.category}
-
   employeeRu={
     item.employees?.full_name_ru || ""
   }
-
   employeeUa={
     item.employees?.full_name_ua || ""
   }
-
   employeeEn={
     item.employees?.full_name_en || ""
   }
-
   description={item.description}
-  photoUrl={
-    item.employees?.photo_url
-  }
 />
           ))}
 
