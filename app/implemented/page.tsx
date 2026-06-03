@@ -2,6 +2,7 @@ import { Header } from "@/components/layout/Header";
 import { ImprovementCard } from "@/components/cards/ImprovementCard";
 import { supabase } from "@/lib/supabase";
 
+
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 export default async function ImplementedPage() {
@@ -11,9 +12,11 @@ export default async function ImplementedPage() {
     .select(`
   *,
   employees (
-    full_name,
-    photo_url
-  )
+  full_name_ru,
+  full_name_ua,
+  full_name_en,
+  photo_url
+)
 `)
     .eq("status", "Внедрено")
     .order("created_at", { ascending: false });
@@ -32,13 +35,28 @@ export default async function ImplementedPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
 
           {improvements?.map((item) => (
-            <ImprovementCard
-              key={item.id}
-              title={item.category}
-              category={item.category}
-              employee={item.employees?.full_name}
-              description={item.description}
-            />
+           <ImprovementCard
+  key={item.id}
+  title={item.category}
+  category={item.category}
+
+  employeeRu={
+    item.employees?.full_name_ru || ""
+  }
+
+  employeeUa={
+    item.employees?.full_name_ua || ""
+  }
+
+  employeeEn={
+    item.employees?.full_name_en || ""
+  }
+
+  description={item.description}
+  photoUrl={
+    item.employees?.photo_url
+  }
+/>
           ))}
 
         </div>

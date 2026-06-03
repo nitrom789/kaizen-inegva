@@ -44,12 +44,17 @@ export default async function ArgoNewPage() {
               photoUrl={item.employees?.photo_url}
               title={item.category}
               category={item.category}
-              employee={
-                item.employees?.full_name_ua ||
-                item.employees?.full_name_ru ||
-                item.employees?.full_name_en ||
-                 ""
-              }
+              employeeRu={
+  item.employees?.full_name_ru || ""
+}
+
+employeeUa={
+  item.employees?.full_name_ua || ""
+}
+
+employeeEn={
+  item.employees?.full_name_en || ""
+}
               description={item.description}
             />
 

@@ -9,7 +9,11 @@ import { categoryTranslations } from "@/lib/categoryTranslations";
 type ImprovementCardProps = {
   title: string;
   category: string;
-  employee: string;
+
+  employeeRu: string;
+  employeeUa: string;
+  employeeEn: string;
+
   description: string;
   photoUrl?: string;
   rejectReason?: string;
@@ -18,7 +22,11 @@ type ImprovementCardProps = {
 export function ImprovementCard({
   title,
   category,
-  employee,
+
+  employeeRu,
+  employeeUa,
+  employeeEn,
+
   description,
   photoUrl,
   rejectReason,
@@ -26,6 +34,13 @@ export function ImprovementCard({
 
   const { language, t } =
     useTranslation();
+
+  const employee =
+  language === "ua"
+    ? employeeUa
+    : language === "en"
+    ? employeeEn
+    : employeeRu;
 
   const translatedCategory =
     categoryTranslations[
