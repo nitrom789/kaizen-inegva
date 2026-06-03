@@ -395,12 +395,17 @@ const [fullNameEn, setFullNameEn] =
   const filteredEmployees =
     employees.filter((item) => {
 
-      const matchesSearch =
-        item.full_name_ua
-          .toLowerCase()
-          .includes(
-            search.toLowerCase()
-          );
+const matchesSearch =
+  (
+    item.full_name_ua ||
+    item.full_name_ru ||
+    item.full_name_en ||
+    ""
+  )
+    .toLowerCase()
+    .includes(
+      search.toLowerCase()
+    );
 
       const matchesSite =
         filterSite === "all"
