@@ -8,7 +8,9 @@ import { useTranslation } from "@/hooks/useTranslation";
 
 type Employee = {
   id: number;
-  full_name: string;
+  full_name_ru: string;
+  full_name_ua: string;
+  full_name_en: string;
   pin_code: string;
 };
 
@@ -29,8 +31,10 @@ export default function PointsPage() {
   const site =
     params.site as string;
 
-  const { t } =
-    useTranslation();
+  const {
+    language,
+    t,
+  } = useTranslation();
 
   const [employees, setEmployees] =
     useState<Employee[]>([]);
@@ -44,6 +48,21 @@ export default function PointsPage() {
   useEffect(() => {
     fetchLeaderboard();
   }, []);
+
+  const getEmployeeName = (
+    employee: Employee
+  ) => {
+
+    if (language === "ua") {
+      return employee.full_name_ua;
+    }
+
+    if (language === "en") {
+      return employee.full_name_en;
+    }
+
+    return employee.full_name_ru;
+  };
 
   const fetchLeaderboard = async () => {
 
@@ -62,7 +81,9 @@ export default function PointsPage() {
       return;
     }
 
-    setEmployees(employeesData);
+    setEmployees(
+      employeesData as Employee[]
+    );
 
     const employeeIds =
       employeesData.map(
@@ -118,11 +139,11 @@ export default function PointsPage() {
   const handleOpenCabinet = () => {
 
     const employee =
-        employees.find(
-            (item) =>
-            String(item.pin_code).trim() ===
-            pinCode.trim()
-    );
+      employees.find(
+        (item) =>
+          String(item.pin_code).trim() ===
+          pinCode.trim()
+      );
 
     if (!employee) {
       alert("Неверный PIN");
@@ -135,7 +156,8 @@ export default function PointsPage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-blue-600 to-white p-4">
-        <Header />
+
+      <Header />
 
       <div className="max-w-3xl mx-auto space-y-6">
 
@@ -147,8 +169,7 @@ export default function PointsPage() {
 
           <p className="text-gray-500">
 
-            {t.siteLabel}:
-            {" "}
+            {t.siteLabel}:{" "}
 
             {site === "argo"
               ? t.siteArgo
@@ -157,8 +178,6 @@ export default function PointsPage() {
           </p>
 
         </div>
-
-
 
         <div className="bg-white rounded-3xl shadow-xl p-6 space-y-4">
 
@@ -190,7 +209,8 @@ export default function PointsPage() {
           </button>
 
         </div>
-                <div className="bg-white rounded-3xl shadow-xl p-6 space-y-4">
+
+        <div className="bg-white rounded-3xl shadow-xl p-6 space-y-4">
 
           {leaderboard.map((item) => {
 
@@ -210,7 +230,11 @@ export default function PointsPage() {
 
                 <span className="font-medium">
 
-                  {employee?.full_name}
+                  {employee
+                    ? getEmployeeName(
+                        employee
+                      )
+                    : ""}
 
                 </span>
 
@@ -221,6 +245,7 @@ export default function PointsPage() {
                 </span>
 
               </div>
+
             );
           })}
 
